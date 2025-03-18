@@ -13,13 +13,13 @@ Blood](https://deconreconstruction.itch.io/snowbound-blood) by
 * If there's any features you're missing, first blame DSGM, then blame me 
 
 ## Play instructions
-* On emulator, it works
+* Download the [latest release](https://github.com/TilTNeXus/snowbound-ds/releases/latest)
+* On emulator, it works without problems
 * On TWiLight Menu++, press Y and change "Game Loader" to Unlaunch
-* Don't press too many buttons because the game may explode
-* Ignore graphical glitches because I tried my hardest
+* Don't press too many buttons, and try to ignore graphical glitches
 
 ## Build instructions
-* Move contents of fontspecial to <DSGM folder>/Fonts/CompiledBins
+* Move contents of fontspecial to \<DSGM folder\>/Fonts/CompiledBins
 * Open sbbds.dsgm
 * Press the compile button
 * Pray to the All-mother
