@@ -4,7 +4,7 @@ A port of [Snowbound
 Blood](https://deconreconstruction.itch.io/snowbound-blood) by
 [Deconreconstruction](https://deconreconstruction.com/) to Nintendo DS.
 
-* Includes the Prologue and Volume 1.
+* Includes the prologue and Volume 1.
 * Made with [DS Game Maker
   5.](https://github.com/DigitalDesignDude/DS-Game-Maker-5-Setup)
 * Tested on DeSmuME and Nintendo DSi with TWiLight Menu++
@@ -19,8 +19,8 @@ Blood](https://deconreconstruction.itch.io/snowbound-blood) by
 * Don't press too many buttons, and try to ignore graphical glitches
 
 ## Build instructions
-* Move contents of fontspecial to \<DSGM folder\>/Fonts/CompiledBins
-* Open sbbds.dsgm
+* Move contents of fontspecial to \<DSGM folder\>/Fonts/CompiledBINs
+* Open sbbds.dsgm in DS Game Maker
 * Press the compile button
 * Pray to the All-Mother
 * The icon will be the default one and the game title will have an
