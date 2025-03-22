@@ -1,3 +1,4 @@
 *.nds
-*.ninja
+*.ninja*
+.DS_store
 build/
