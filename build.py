@@ -1,0 +1,29 @@
+#!/usr/bin/env python3
+
+from architectds import *
+
+nitrofs = NitroFS()
+nitrofs.add_grit(['assets/backgrounds'], 'backgrounds')
+nitrofs.add_nflib_font(['assets/font'], 'font')
+nitrofs.generate_image()
+
+arm9 = Arm9Binary(
+    sourcedirs=['src'],
+    libs=['NE', 'nflib', 'nds9'],
+    libdirs=[
+        '${BLOCKSDS}/libs/libnds',
+        '${BLOCKSDSEXT}/nitro-engine',
+        '${BLOCKSDSEXT}/nflib'
+    ]
+)
+arm9.generate_elf()
+
+nds = NdsRom(
+    binaries=[arm9, nitrofs],
+    game_title='Snowbound Blood',
+    game_subtitle='Deconreconstruction',
+    game_author=''
+)
+nds.generate_nds()
+
+nds.run_command_line_arguments()
