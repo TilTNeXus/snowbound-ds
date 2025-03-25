@@ -68,7 +68,7 @@ int main(void) {
     NF_UpdateTextLayers();*/
 
     setupMainMenu();
-
+    printf("%d", NE_TextureFreeMem());
     while (1) {
         NE_WaitForVBL(0);
 	//oamUpdate(&oamSub);
