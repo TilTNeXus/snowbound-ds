@@ -3,10 +3,10 @@
 #include <filesystem.h>
 #include <nds.h>
 #include <NEMain.h>
-#include <nf_lib.h>
 
 #include "mainmenu.h"
 #include "screens.h"
+#include "sound.h"
 
 NE_Sprite *mmBG;
 NE_Sprite *mmTitle;
@@ -15,6 +15,7 @@ NE_Material *mmObjMtl[30];
 NE_Palette *mmObjPal[30];
 
 void setupMainMenu(void) {
+    musOffset = screenFrames;
     strcpy(activeScreen, "mainmenu");
     NE_Material *mmBGMtl = NE_MaterialCreate();
     NE_Palette *mmBGPal = NE_PaletteCreate();
@@ -227,6 +228,7 @@ void setupMainMenu(void) {
 }
 
 void drawMainMenu(int screen) {
+    playBGM("mainmenu");
     NE_SpriteDraw(mmBG);
     // top screen
     if (!screen) {

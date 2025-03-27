@@ -8,15 +8,20 @@
 #include <nf_lib.h>
 
 #include "mainmenu.h"
+#include "splash.h"
 #include "screens.h"
+#include "sound.h"
 
-NE_Sprite *sprite[10];
-
+int screenFrames = 0;
 char activeScreen[10] = "mainmenu";
 
 void draw3D_top(void) {
     NE_2DViewInit();
-    drawMainMenu(1);
+    if (strcmp(activeScreen, "splash") == 0) {
+      drawSplash();
+    } else if (strcmp(activeScreen, "mainmenu") == 0) {
+      drawMainMenu(1);
+    }
 }
 
 void draw3D_bottom(void) {
@@ -59,18 +64,27 @@ int main(void) {
     irqEnable(IRQ_HBLANK);
     irqSet(IRQ_VBLANK, NE_VBLFunc);
     irqSet(IRQ_HBLANK, NE_HBLFunc);
-
-    NE_InitDual3D();
+    if (strcmp(activeScreen, "mainmenu") == 0) {
+      NE_InitDual3D();
+    } else {
+      NE_Init3D();
+    }
+    
     NE_InitConsole();
     /*setup2D();
 
     NF_WriteText(1, 0, 1, 1, buffer);
     NF_UpdateTextLayers();*/
 
-    setupMainMenu();
-    printf("%d", NE_TextureFreeMem());
+    //setupMainMenu();
+    setupSplash();
+    
+    soundEnable();
+    NF_InitRawSoundBuffers();
     while (1) {
+      //printf("%d", NE_TextureFreeMem());
         NE_WaitForVBL(0);
+	screenFrames++;
 	//oamUpdate(&oamSub);
         scanKeys();
         uint32_t keys = keysHeld();
@@ -79,8 +93,10 @@ int main(void) {
         //NF_SpriteOamSet(1);
 
         // Draw 3D scene
-	if(strcmp(activeScreen, "mainmenu") == 0) {
-        NE_ProcessDual(draw3D_top, draw3D_bottom);
+	if (strcmp(activeScreen, "mainmenu") == 0) {
+          NE_ProcessDual(draw3D_top, draw3D_bottom);
+	} else {
+	  NE_Process(draw3D_top);
 	}
     }
     return 0;

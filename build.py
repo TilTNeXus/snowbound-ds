@@ -4,8 +4,10 @@ from architectds import *
 
 nitrofs = NitroFS()
 nitrofs.add_grit(['assets/backgrounds'], 'backgrounds')
-nitrofs.add_grit(['assets/gui'], 'gui')
 nitrofs.add_nflib_font(['assets/font'], 'font')
+nitrofs.add_grit(['assets/gui'], 'gui')
+nitrofs.add_grit(['assets/images'], 'images')
+nitrofs.add_files_unchanged(['assets/audio'], 'audio')
 nitrofs.generate_image()
 
 arm9 = Arm9Binary(
