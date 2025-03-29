@@ -15,6 +15,16 @@
 int screenFrames = 0;
 char activeScreen[10] = "mainmenu";
 
+NE_Sprite *spr[38];
+NE_Material *sprMtl[38];
+NE_Palette *sprPal[38];
+
+uint32_t kHeld;
+uint32_t kDown;
+uint32_t kUp;
+
+int tc;
+
 void draw3D_top(void) {
     NE_2DViewInit();
     if (strcmp(activeScreen, "splash") == 0) {
@@ -64,6 +74,7 @@ int main(void) {
     irqEnable(IRQ_HBLANK);
     irqSet(IRQ_VBLANK, NE_VBLFunc);
     irqSet(IRQ_HBLANK, NE_HBLFunc);
+    
     if (strcmp(activeScreen, "mainmenu") == 0) {
       NE_InitDual3D();
     } else {
@@ -82,13 +93,14 @@ int main(void) {
     soundEnable();
     NF_InitRawSoundBuffers();
     while (1) {
-      //printf("%d", NE_TextureFreeMem());
+      printf("\x1b[2J%d", NE_TextureFreeMem());
         NE_WaitForVBL(0);
 	screenFrames++;
 	//oamUpdate(&oamSub);
         scanKeys();
-        uint32_t keys = keysHeld();
-	
+        kHeld = keysHeld();
+	kDown = keysDown();
+	kUp = keysUp();
         // Refresh shadow OAM copy
         //NF_SpriteOamSet(1);
 
