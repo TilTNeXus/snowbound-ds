@@ -1,0 +1,7 @@
+{
+    "files.associations": {
+        "volumeselect.h": "c",
+        "mainmenu.h": "c",
+        "screens.h": "c"
+    }
+}
