@@ -1,4 +1,5 @@
 *.nds
 *.ninja*
+.vscode/
 .DS_store
 build/
