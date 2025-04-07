@@ -10,6 +10,7 @@ nitrofs.add_nflib_font(['assets/font'], 'font')
 nitrofs.add_grit(['assets/gui'], 'gui')
 nitrofs.add_grit(['assets/images'], 'images')
 nitrofs.add_nflib_bg_tiled(['assets/nf'], 'nf')
+nitrofs.add_files_unchanged(['assets/scripts'], 'scripts')
 nitrofs.generate_image()
 
 arm9 = Arm9Binary(

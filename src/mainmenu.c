@@ -13,116 +13,115 @@ int mainMenuSelect;
 
 void mainMenuControl(void) {
     switch (mainMenuSelect) {
-    case 0:
-      NE_SpriteSetMaterialCanvas(spr[33], 0, 16, 71, 32);
-      NE_SpriteSetMaterialCanvas(spr[34], 0, 32, 71, 48);
-      NE_SpriteSetMaterialCanvas(spr[35], 71, 0, 164, 16);
-      NE_SpriteSetMaterialCanvas(spr[36], 71, 32, 190, 48);
-      NE_SpriteSetMaterialCanvas(spr[37], 165, 0, 256, 16);
-      NE_SpriteSetMaterialCanvas(spr[38], 192, 32, 256, 48);
-      break;
-    case 1:
-      NE_SpriteSetMaterialCanvas(spr[33], 0, 0, 71, 16);
-      NE_SpriteSetMaterialCanvas(spr[34], 0, 48, 71, 64);
-      NE_SpriteSetMaterialCanvas(spr[35], 71, 0, 164, 16);
-      NE_SpriteSetMaterialCanvas(spr[36], 71, 32, 190, 48);
-      NE_SpriteSetMaterialCanvas(spr[37], 165, 0, 256, 16);
-      NE_SpriteSetMaterialCanvas(spr[38], 192, 32, 256, 48);
-      break;
-    case 2:
-      NE_SpriteSetMaterialCanvas(spr[33], 0, 0, 71, 16);
-      NE_SpriteSetMaterialCanvas(spr[34], 0, 32, 71, 48);
-      NE_SpriteSetMaterialCanvas(spr[35], 71, 16, 164, 32);
-      NE_SpriteSetMaterialCanvas(spr[36], 71, 32, 190, 48);
-      NE_SpriteSetMaterialCanvas(spr[37], 165, 0, 256, 16);
-      NE_SpriteSetMaterialCanvas(spr[38], 192, 32, 256, 48);
-      break;
-    case 3:
-      NE_SpriteSetMaterialCanvas(spr[33], 0, 0, 71, 16);
-      NE_SpriteSetMaterialCanvas(spr[34], 0, 32, 71, 48);
-      NE_SpriteSetMaterialCanvas(spr[35], 71, 0, 164, 16);
-      NE_SpriteSetMaterialCanvas(spr[36], 71, 48, 190, 64);
-      NE_SpriteSetMaterialCanvas(spr[37], 165, 0, 256, 16);
-      NE_SpriteSetMaterialCanvas(spr[38], 192, 32, 256, 48);
-      break;
-    case 4:
-      NE_SpriteSetMaterialCanvas(spr[33], 0, 0, 71, 16);
-      NE_SpriteSetMaterialCanvas(spr[34], 0, 32, 71, 48);
-      NE_SpriteSetMaterialCanvas(spr[35], 71, 0, 164, 16);
-      NE_SpriteSetMaterialCanvas(spr[36], 71, 32, 190, 48);
-      NE_SpriteSetMaterialCanvas(spr[37], 165, 16, 256, 32);
-      NE_SpriteSetMaterialCanvas(spr[38], 192, 32, 256, 48);
-      break;
-    case 5:
-      NE_SpriteSetMaterialCanvas(spr[33], 0, 0, 71, 16);
-      NE_SpriteSetMaterialCanvas(spr[34], 0, 32, 71, 48);
-      NE_SpriteSetMaterialCanvas(spr[35], 71, 0, 164, 16);
-      NE_SpriteSetMaterialCanvas(spr[36], 71, 32, 190, 48);
-      NE_SpriteSetMaterialCanvas(spr[37], 165, 0, 256, 16);
-      NE_SpriteSetMaterialCanvas(spr[38], 192, 48, 256, 64);
-      break;
+    	case 0:
+      		NE_SpriteSetMaterialCanvas(spr[33], 0, 16, 71, 32);
+      		NE_SpriteSetMaterialCanvas(spr[34], 0, 32, 71, 48);
+      		NE_SpriteSetMaterialCanvas(spr[35], 71, 0, 164, 16);
+      		NE_SpriteSetMaterialCanvas(spr[36], 71, 32, 190, 48);
+     	 	NE_SpriteSetMaterialCanvas(spr[37], 165, 0, 256, 16);
+      		NE_SpriteSetMaterialCanvas(spr[38], 192, 32, 256, 48);
+      		break;
+    	case 1:
+     		NE_SpriteSetMaterialCanvas(spr[33], 0, 0, 71, 16);
+      		NE_SpriteSetMaterialCanvas(spr[34], 0, 48, 71, 64);
+      		NE_SpriteSetMaterialCanvas(spr[35], 71, 0, 164, 16);
+      		NE_SpriteSetMaterialCanvas(spr[36], 71, 32, 190, 48);
+      		NE_SpriteSetMaterialCanvas(spr[37], 165, 0, 256, 16);
+      		NE_SpriteSetMaterialCanvas(spr[38], 192, 32, 256, 48);
+      		break;
+    	case 2:
+      		NE_SpriteSetMaterialCanvas(spr[33], 0, 0, 71, 16);
+      		NE_SpriteSetMaterialCanvas(spr[34], 0, 32, 71, 48);
+      		NE_SpriteSetMaterialCanvas(spr[35], 71, 16, 164, 32);
+      		NE_SpriteSetMaterialCanvas(spr[36], 71, 32, 190, 48);
+      		NE_SpriteSetMaterialCanvas(spr[37], 165, 0, 256, 16);
+      		NE_SpriteSetMaterialCanvas(spr[38], 192, 32, 256, 48);
+      		break;
+    	case 3:
+      		NE_SpriteSetMaterialCanvas(spr[33], 0, 0, 71, 16);
+      		NE_SpriteSetMaterialCanvas(spr[34], 0, 32, 71, 48);
+      		NE_SpriteSetMaterialCanvas(spr[35], 71, 0, 164, 16);
+      		NE_SpriteSetMaterialCanvas(spr[36], 71, 48, 190, 64);
+      		NE_SpriteSetMaterialCanvas(spr[37], 165, 0, 256, 16);
+      		NE_SpriteSetMaterialCanvas(spr[38], 192, 32, 256, 48);
+      		break;
+    	case 4:
+      		NE_SpriteSetMaterialCanvas(spr[33], 0, 0, 71, 16);
+      		NE_SpriteSetMaterialCanvas(spr[34], 0, 32, 71, 48);
+      		NE_SpriteSetMaterialCanvas(spr[35], 71, 0, 164, 16);
+      		NE_SpriteSetMaterialCanvas(spr[36], 71, 32, 190, 48);
+      		NE_SpriteSetMaterialCanvas(spr[37], 165, 16, 256, 32);
+      		NE_SpriteSetMaterialCanvas(spr[38], 192, 32, 256, 48);
+      		break;
+    	case 5:
+      		NE_SpriteSetMaterialCanvas(spr[33], 0, 0, 71, 16);
+      		NE_SpriteSetMaterialCanvas(spr[34], 0, 32, 71, 48);
+      		NE_SpriteSetMaterialCanvas(spr[35], 71, 0, 164, 16);
+      		NE_SpriteSetMaterialCanvas(spr[36], 71, 32, 190, 48);
+      		NE_SpriteSetMaterialCanvas(spr[37], 165, 0, 256, 16);
+      		NE_SpriteSetMaterialCanvas(spr[38], 192, 48, 256, 64);
+      		break;
     }
     if (screenFrames - tc < 11 && !pressedA) {
-      NE_SpriteSetPos(spr[33+mainMenuSelect], 10+screenFrames-tc, 28+24*mainMenuSelect);
+      	NE_SpriteSetPos(spr[33+mainMenuSelect], 10+screenFrames-tc, 28+24*mainMenuSelect);
     }
     for (int i = 0; i < 6; i++) {
-      if (spr[33+i]->x > 10 && i != mainMenuSelect) {
-	NE_SpriteSetPos(spr[33+i], spr[33+i]->x-1, 28+24*i);
-      }
+      	if (spr[33+i]->x > 10 && i != mainMenuSelect) {
+			NE_SpriteSetPos(spr[33+i], spr[33+i]->x-1, 28+24*i);
+      	}
     }
     if (mainMenuSelect == 0 && pressedA) {
-      if (screenFrames - tc < 91) {
-	NE_SpriteSetParams(spr[0], (screenFrames-tc)*31/90, 0, NE_White);
-	soundSetVolume(0, 127-(screenFrames-tc)*127/90);
-	soundSetVolume(1, 127-(screenFrames-tc)*127/90);
-      }
-      if (screenFrames - tc == 91) {
-	setupVolumeSelect();
-      }
+      	if (screenFrames - tc < 91) {
+			NE_SpriteSetParams(spr[0], (screenFrames-tc)*31/90, 0, NE_White);
+			soundSetVolume(0, 127-(screenFrames-tc)*127/90);
+			soundSetVolume(1, 127-(screenFrames-tc)*127/90);
+      	} else if (screenFrames - tc == 91) {
+			setupVolumeSelect();
+    	}
     } else if (mainMenuSelect == 5 && pressedA) {
-      if (screenFrames - tc < 16) {
-	NE_SpriteSetParams(spr[0], 1+(screenFrames-tc)*2, 0, NE_White);
-	soundSetVolume(0, 127-(screenFrames-tc)*127/15);
-	soundSetVolume(1, 127-(screenFrames-tc)*127/15);
-      }
-      if (screenFrames - tc == 20) {
-	NE_End();
-	//exit(0);
-	systemShutDown();
-      }
+      	if (screenFrames - tc < 16) {
+			NE_SpriteSetParams(spr[0], 1+(screenFrames-tc)*2, 0, NE_White);
+			soundSetVolume(0, 127-(screenFrames-tc)*127/15);
+			soundSetVolume(1, 127-(screenFrames-tc)*127/15);
+      	} else if (screenFrames - tc == 20) {
+			NE_End();
+			//exit(0);
+			systemShutDown();
+      	}
     }
     if (5 < screenFrames && screenFrames < 10) {
-      NE_SpriteSetParams(spr[0], 79-screenFrames*8, 0, NE_White);
+      	NE_SpriteSetParams(spr[0], 79-screenFrames*8, 0, NE_White);
     } else if (screenFrames == 10) {
-      NE_SpriteVisible(spr[0], 0);
+      	NE_SpriteVisible(spr[0], 0);
     }
 }
 void inputMainMenu(void) {
     if (kUp & KEY_UP) {
-      if (!pressedA) {
-	tc = screenFrames;
-	NE_SpriteVisible(spr[0], 0);
-	if (0 < mainMenuSelect) {
-	  mainMenuSelect--;
-	} else {
-	  mainMenuSelect = 5;
-	}
-      }
+      	if (!pressedA) {
+			tc = screenFrames;
+			NE_SpriteVisible(spr[0], 0);
+			if (0 < mainMenuSelect) {
+	  			mainMenuSelect--;
+			} else {
+	  			mainMenuSelect = 5;
+			}
+      	}
     } else if (kUp & KEY_DOWN) {
-      if (!pressedA) {
-	tc = screenFrames;
-	NE_SpriteVisible(spr[0], 0);
-	if (mainMenuSelect < 5) {
-	  mainMenuSelect++;
-	} else {
-	  mainMenuSelect = 0;
-	}
-      }
+      	if (!pressedA) {
+			tc = screenFrames;
+			NE_SpriteVisible(spr[0], 0);
+			if (mainMenuSelect < 5) {
+	  			mainMenuSelect++;
+			} else {
+	  			mainMenuSelect = 0;
+			}
+      	}
     } else if (kUp & KEY_A) {
-      if (!pressedA) tc = screenFrames;
-      pressedA = 1;
-      NE_SpriteVisible(spr[0], 1);
-      }
+      	if (!pressedA) tc = screenFrames;
+      	pressedA = 1;
+    	NE_SpriteVisible(spr[0], 1);
+    }
+		
 }
 
 void setupMainMenu(void) {
@@ -141,13 +140,13 @@ void setupMainMenu(void) {
     soundKill(1);
     
     for (int i = 1; i < 40; i++) {
-      NE_SpriteDelete(spr[i]);
-      NE_MaterialDelete(sprMtl[i]);
-      NE_PaletteDelete(sprPal[i]);
-      spr[i] = NE_SpriteCreate();
-      sprMtl[i] = NE_MaterialCreate();
-      sprPal[i] = NE_PaletteCreate();
-      NE_SpriteSetParams(spr[i], 31, 1, NE_White);
+      	NE_SpriteDelete(spr[i]);
+      	NE_MaterialDelete(sprMtl[i]);
+      	NE_PaletteDelete(sprPal[i]);
+      	spr[i] = NE_SpriteCreate();
+      	sprMtl[i] = NE_MaterialCreate();
+      	sprPal[i] = NE_PaletteCreate();
+      	NE_SpriteSetParams(spr[i], 31, 1, NE_White);
     }
 
     NE_SpriteVisible(spr[0], 1);
@@ -365,12 +364,12 @@ void drawMainMenu(int screen) {
     NE_SpriteDraw(spr[1]); // table
     // top screen
     if (!screen) {
-      NE_SpriteDraw(spr[2]); // title
-      NE_SpriteDraw(spr[3]); // hamifi
-      NE_SpriteDraw(spr[6]); // rypite
-      NE_SpriteDraw(spr[8]); // bytcon
-      NE_SpriteDraw(spr[12]); // occeus
-      NE_SpriteDraw(spr[14]); // raurou
+      	NE_SpriteDraw(spr[2]); // title
+      	NE_SpriteDraw(spr[3]); // hamifi
+      	NE_SpriteDraw(spr[6]); // rypite
+      	NE_SpriteDraw(spr[8]); // bytcon
+      	NE_SpriteDraw(spr[12]); // occeus
+      	NE_SpriteDraw(spr[14]); // raurou
       NE_SpriteDraw(spr[16]); // necron
       NE_SpriteDraw(spr[17]); // gerbat picture
       NE_SpriteDraw(spr[19]); // valtel

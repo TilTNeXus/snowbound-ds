@@ -5,15 +5,21 @@
 #include <NEMain.h>
 #include <nf_lib.h>
 
+#include "dialoguesystem.h"
 #include "mainmenu.h"
 #include "prologue.h"
 #include "screens.h"
 #include "sound.h"
 
-char songPlaying[] = "               ";
-
 void controlPrologue(void) {
+	if (5 < screenFrames && screenFrames < 67) {
+		NE_SpriteSetParams(spr[0], 34-screenFrames/2, 0, NE_White);
+  	} else if (screenFrames == 67) {
+	   	NE_SpriteVisible(spr[0], 0);
+  	}
+	if (pressedA) {
 
+	}
 }
 
 void inputPrologue(void) {
@@ -25,11 +31,7 @@ void setupPrologue(void) {
     strcpy(activeScreen, "pl");
     strcpy(songPlaying, "secilytheme");
 
-    NF_Set2D(1, 0);
-    
-    NF_InitTiledBgBuffers();
-    NF_InitTiledBgSys(1);
-    NF_InitTextSys(1);
+    setup2D();
 
     screenFrames = 0;
 
@@ -43,21 +45,24 @@ void setupPrologue(void) {
 		NE_SpriteSetParams(spr[i], 31, 1, NE_White);
     }
 
-    //NE_SpriteVisible(spr[0], 1);
+	setupDialogue("pl");
+
+    NE_SpriteVisible(spr[0], 1);
     
-    NE_MaterialTexLoadGRF(sprMtl[1], sprPal[1], NE_TEXGEN_TEXCOORD, "backgrounds/pl/warehouse_png.grf");
+    //NE_MaterialTexLoadGRF(sprMtl[1], sprPal[1], NE_TEXGEN_TEXCOORD, "backgrounds/pl/warehouse_png.grf");
     NE_SpriteSetMaterial(spr[1], sprMtl[1]);
     NE_SpriteSetPos(spr[1], 0, 0);
     NE_SpriteSetPriority(spr[1], 50);
 
-    NE_MaterialTexLoadGRF(sprMtl[2], sprPal[2], NE_TEXGEN_TEXCOORD, "characters/secily/secily_sword_hold_speak_png.grf");
+    //NE_MaterialTexLoadGRF(sprMtl[2], sprPal[2], NE_TEXGEN_TEXCOORD, "characters/secily/secily_sword_hold_speak_png.grf");
     NE_SpriteSetMaterial(spr[2], sprMtl[2]);
     NE_SpriteSetPos(spr[2], 0, -38);
     NE_SpriteSetPriority(spr[2], 10);
 
     NF_LoadTiledBg("nf/table", "table", 256, 256);
-    NF_CreateTiledBg(1, 3, "table");
+	NF_CreateTiledBg(1, 3, "table");
 
+    setupDialogue("pl");
 }
 
 void drawPrologue() {

@@ -1,0 +1,22 @@
+{
+    "script": [ 
+        { 
+            "id": 0,
+            "type": "standard",
+            "background": "warehouse",
+            "character": "secily",
+            "sprite": "sword_hold_speak",
+            "talking": "secily",
+            "dialogue": "1.e4 Go ahead, take it. ...e5"
+        },
+        { 
+            "id": 1,
+            "type": "standard",
+            "background": "warehouse",
+            "character": "secily",
+            "sprite": "sword_hold",
+            "talking": "narration",
+            "dialogue": "You proffer the dueling rapier, your second-best, to the ruffian. You took down his two mates easily enough, and now he's the last one standing. Unarmed and afraid."
+        }
+    ]
+}

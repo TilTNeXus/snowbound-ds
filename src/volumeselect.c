@@ -14,9 +14,9 @@ int scroll;
 bool changed;
 
 void volumeSelectControl(void) {
-    if (5 < screenFrames && screenFrames < 36) {
-      	NE_SpriteSetParams(spr[0], 36-screenFrames, 0, NE_White);
-    } else if (screenFrames == 37) {
+    if (5 < screenFrames && screenFrames < 67) {
+      	NE_SpriteSetParams(spr[0], 34-screenFrames/2, 0, NE_White);
+    } else if (screenFrames == 67) {
      	NE_SpriteVisible(spr[0], 0);
     }
     if (changed) {
@@ -30,16 +30,25 @@ void volumeSelectControl(void) {
       	for (int i = 0; i < 15; i++) {
 			NE_SpriteSetPos(spr[2+i], 32, 8+40*i-scroll);
       	}
+    } else if (pressedA) {
+        if (screenFrames - tc < 63) {
+            NE_SpriteSetParams(spr[0], (screenFrames-tc)/2, 0, NE_White);
+        } else if (screenFrames - tc == 63) {
+		    switch (volumeSelect) {
+			    case 0:
+				    setupPrologue();
+				    break;
+		    	default:
+		    		break;
+		    }
+	    }
+    } else if (pressedB) {
+        if (screenFrames - tc < 8) {
+            NE_SpriteSetParams(spr[0], (screenFrames-tc)*4, 0, NE_White);
+        } else if (screenFrames - tc == 8) {
+		    setupMainMenu();
+	    }
     }
-	if (pressedA) {
-		switch (volumeSelect) {
-			case 0:
-				setupPrologue();
-				break;
-			default:
-				break;
-		}
-	}
 }
 void inputVolumeSelect(void) {
     if (kUp & KEY_UP) {
@@ -57,13 +66,15 @@ void inputVolumeSelect(void) {
 			volumeSelect++;
       	}
     } else if (kUp & KEY_A) {
-    	pressedA = 1;
+    	changed = 0;
+        pressedA = 1;
     	tc = screenFrames;
+        NE_SpriteVisible(spr[0], 1);
     } else if (kUp & KEY_B) {
     	changed = 0;
-    	NE_SpriteVisible(spr[0], 1);
-    	NE_SpriteSetParams(spr[0], 31, 0, NE_White);
-    	setupMainMenu();
+        pressedB = 1;
+        tc = screenFrames;
+        NE_SpriteVisible(spr[0], 1);
     }
 }
 
@@ -74,6 +85,7 @@ void setupVolumeSelect(void) {
     screenFrames = 0;
     volumeSelect = 0;
     pressedA = 0;
+    pressedB = 0;
     changed = 0;
     scroll = 0;
 
@@ -105,54 +117,12 @@ void setupVolumeSelect(void) {
     NE_SpriteSetPriority(spr[3], 19);
 
     NE_MaterialTexLoadGRF(sprMtl[4], sprPal[4], NE_TEXGEN_TEXCOORD, "gui/volumeselect/upcominglocked_png.grf");
-    NE_SpriteSetMaterial(spr[4], sprMtl[4]);
-    NE_SpriteSetPos(spr[4], 32, 88);
-    NE_SpriteSetPriority(spr[4], 18);
-
-    NE_SpriteSetMaterial(spr[5], sprMtl[4]);
-    NE_SpriteSetPos(spr[5], 32, 128);
-    NE_SpriteSetPriority(spr[5], 17);
-
-    NE_SpriteSetMaterial(spr[6], sprMtl[4]);
-    NE_SpriteSetPos(spr[6], 32, 168);
-    NE_SpriteSetPriority(spr[6], 17);
-
-    NE_SpriteSetMaterial(spr[7], sprMtl[4]);
-    NE_SpriteSetPos(spr[7], 32, 208);
-    NE_SpriteSetPriority(spr[7], 17);
-
-    NE_SpriteSetMaterial(spr[8], sprMtl[4]);
-    NE_SpriteSetPos(spr[8], 32, 248);
-    NE_SpriteSetPriority(spr[8], 17);
-
-    NE_SpriteSetMaterial(spr[9], sprMtl[4]);
-    NE_SpriteSetPos(spr[9], 32, 288);
-    NE_SpriteSetPriority(spr[9], 17);
-
-    NE_SpriteSetMaterial(spr[10], sprMtl[4]);
-    NE_SpriteSetPos(spr[10], 32, 328);
-    NE_SpriteSetPriority(spr[10], 17);
-
-    NE_SpriteSetMaterial(spr[11], sprMtl[4]);
-    NE_SpriteSetPos(spr[11], 32, 368);
-    NE_SpriteSetPriority(spr[11], 17);
-
-    NE_SpriteSetMaterial(spr[12], sprMtl[4]);
-    NE_SpriteSetPos(spr[12], 32, 408);
-    NE_SpriteSetPriority(spr[12], 17);
-
-    NE_SpriteSetMaterial(spr[13], sprMtl[4]);
-    NE_SpriteSetPos(spr[13], 32, 448);
-    NE_SpriteSetPriority(spr[13], 17);
-
-    NE_SpriteSetMaterial(spr[14], sprMtl[4]);
-    NE_SpriteSetPos(spr[14], 32, 488);
-    NE_SpriteSetPriority(spr[14], 17);
-
-	NE_SpriteSetMaterial(spr[15], sprMtl[4]);
-    NE_SpriteSetPos(spr[15], 32, 488);
-    NE_SpriteSetPriority(spr[15], 17);
-
+    
+    for (int i = 4; i < 16; i++) {
+        NE_SpriteSetMaterial(spr[i], sprMtl[4]);
+        NE_SpriteSetPos(spr[i], 32, 40*i-72);
+        NE_SpriteSetPriority(spr[i], 22-i);
+    }
 }
 
 void drawVolumeSelect(int screen) {
