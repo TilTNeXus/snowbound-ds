@@ -15,6 +15,10 @@ bool changed;
 
 void volumeSelectControl(void) {
     if (5 < screenFrames && screenFrames < 67) {
+        if (noTransition) {
+            screenFrames = 66;
+            noTransition = 0;
+        }
       	NE_SpriteSetParams(spr[0], 34-screenFrames/2, 0, NE_White);
     } else if (screenFrames == 67) {
      	NE_SpriteVisible(spr[0], 0);

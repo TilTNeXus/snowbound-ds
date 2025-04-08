@@ -14,6 +14,7 @@ extern uint32_t kDown;
 extern int tc;
 extern bool pressedA;
 extern bool pressedB;
+extern bool noTransition;
 
 void draw3D_top(void);
 void draw3D_bottom(void);

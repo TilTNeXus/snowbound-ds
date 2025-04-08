@@ -17,13 +17,14 @@ void controlPrologue(void) {
   	} else if (screenFrames == 67) {
 	   	NE_SpriteVisible(spr[0], 0);
   	}
-	if (pressedA) {
-
-	}
 }
 
 void inputPrologue(void) {
-
+    if (kUp & KEY_A) {
+        advance(1);
+    } else if (kUp & KEY_B) {
+        advance(0);
+    }
 }
 
 void setupPrologue(void) {
@@ -34,6 +35,7 @@ void setupPrologue(void) {
     setup2D();
 
     screenFrames = 0;
+    scriptMax = 50;
 
     for (int i = 1; i < 40; i++) {
 		NE_MaterialDelete(sprMtl[i]);
@@ -45,24 +47,18 @@ void setupPrologue(void) {
 		NE_SpriteSetParams(spr[i], 31, 1, NE_White);
     }
 
-	setupDialogue("pl");
-
+    setupDialogue("pl");
     NE_SpriteVisible(spr[0], 1);
     
-    //NE_MaterialTexLoadGRF(sprMtl[1], sprPal[1], NE_TEXGEN_TEXCOORD, "backgrounds/pl/warehouse_png.grf");
-    NE_SpriteSetMaterial(spr[1], sprMtl[1]);
     NE_SpriteSetPos(spr[1], 0, 0);
     NE_SpriteSetPriority(spr[1], 50);
 
-    //NE_MaterialTexLoadGRF(sprMtl[2], sprPal[2], NE_TEXGEN_TEXCOORD, "characters/secily/secily_sword_hold_speak_png.grf");
-    NE_SpriteSetMaterial(spr[2], sprMtl[2]);
-    NE_SpriteSetPos(spr[2], 0, -38);
+    NE_SpriteSetPos(spr[2], 0, -37);
     NE_SpriteSetPriority(spr[2], 10);
 
     NF_LoadTiledBg("nf/table", "table", 256, 256);
 	NF_CreateTiledBg(1, 3, "table");
-
-    setupDialogue("pl");
+    
 }
 
 void drawPrologue() {
@@ -74,4 +70,7 @@ void drawPrologue() {
     NE_SpriteDraw(spr[2]);
 
     NE_SpriteDraw(spr[0]);
+    char buffer[6];
+    sprintf(buffer, "%d", scriptPosition);
+    NF_WriteText(1, 0, 0, 0, buffer);
 }

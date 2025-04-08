@@ -72,6 +72,10 @@ void mainMenuControl(void) {
     }
     if (mainMenuSelect == 0 && pressedA) {
       	if (screenFrames - tc < 91) {
+			if ((1 < screenFrames - tc) && (kUp & KEY_A)) {
+				screenFrames = tc + 89;
+				noTransition = 1;
+			}
 			NE_SpriteSetParams(spr[0], (screenFrames-tc)*31/90, 0, NE_White);
 			soundSetVolume(0, 127-(screenFrames-tc)*127/90);
 			soundSetVolume(1, 127-(screenFrames-tc)*127/90);

@@ -31,6 +31,7 @@ int tc;
 bool pressedA;
 bool pressedB;
 char songPlaying[20] = " ";
+bool noTransition = 0;
 
 void draw3D_top(void) {
     NE_2DViewInit();
@@ -108,7 +109,7 @@ int main(void) {
     soundEnable();
     NF_InitRawSoundBuffers();
     while (1) {
-      	printf("\x1b[2J%d\n%d\n", NE_TextureFreeMem(), screenFrames);
+      	//printf("\x1b[2J%d\n%d\n", NE_TextureFreeMem(), screenFrames);
         NE_WaitForVBL(NE_UPDATE_GUI);
 		screenFrames++;
 		//oamUpdate(&oamSub);
@@ -124,6 +125,7 @@ int main(void) {
           	NE_ProcessDual(draw3D_top, draw3D_bottom);
 		} else {
 	  		NE_Process(draw3D_top);
+            NF_SpriteOamSet(1);
 			NF_UpdateTextLayers();
 		}
     }
