@@ -1,11 +1,9 @@
-#include <filesystem.h>
-#include <nds.h>
-#include <NEMain.h>
-#include <nf_lib.h>
 #include "tiny-json/tiny-json.h"
 
 #include "screens.h"
 #include "dialoguesystem.h"
+#include "transforms.h"
+#include "sound.h"
 
 uint16 scriptPosition;
 json_t const* parent;
@@ -42,19 +40,20 @@ void setupDialogue(char vol[]) {
 }
 
 void createTextbox(char talking[]) {
+    if (strcmp(NF_TILEDBG[1].name, "textbox") == 0) NF_UnloadTiledBg("textbox");
     NF_TEXT[1][0].pal = 0;
-    if (strcmp(talking, "narration") == 0) {
+    if (strcmp(talking, "secily") == 0) {
+        NF_LoadTiledBg("nf/textbox/secily", "textbox", 256, 256);
+    } else {
         NF_TEXT[1][0].pal = 1;
         NF_LoadTiledBg("nf/textbox/narration", "textbox", 256, 256);
-    } else if (strcmp(talking, "secily") == 0) {
-        NF_LoadTiledBg("nf/textbox/secily", "textbox", 256, 256);
     }
     NF_CreateTiledBg(1, 2, "textbox");
 }
 
 void writeFormattedText(int scr, int layer, int x, int y, char s[]) {
     char out[1000];
-    strcpy(out,s);
+    strcpy(out, s);
     char* word = strtok(out, " ");
     char line[40] = "";
     while (word) {
@@ -86,38 +85,72 @@ void readScript(void) {
     for (json_t const* scriptItem = json_getChild(json_getProperty(parent, "script")); scriptItem != 0; scriptItem = json_getSibling(scriptItem)) {
         if (json_getInteger(json_getProperty(scriptItem, "id")) == scriptPosition) {
             strcpy(text, json_getPropertyValue(scriptItem, "dialogue"));
-            sprintf(bgSpritePath, "backgrounds/%s/%s_png.grf", volume, json_getPropertyValue(scriptItem, "background"));
+            if (json_getProperty(scriptItem, "background")) {
+                sprintf(bgSpritePath, "backgrounds/%s/%s_png.grf", volume, json_getPropertyValue(scriptItem, "background"));
+            } else {
+                strcpy(bgSpritePath, "");
+            }
+            if (json_getProperty(scriptItem, "music")) {
+                if (strcmp(songPlaying, json_getPropertyValue(scriptItem, "music")) != 0) {
+                    strcpy(songPlaying, json_getPropertyValue(scriptItem, "music"));
+                    musOffset = screenFrames;
+                    soundKill(0);
+                    soundKill(1);
+                    soundKill(2);
+                }
+            }
             characterID = 0;
             for (json_t const* charactersItem = json_getChild(json_getProperty(scriptItem, "characters")); charactersItem != 0; charactersItem = json_getSibling(charactersItem)) {
                 loadedCharacters = characterID;
-                strcpy(character[characterID], json_getPropertyValue(charactersItem, "character"));
-                strcpy(sprite[characterID], json_getPropertyValue(charactersItem, "sprite"));
-                sprintf(charSpritePath[characterID], "characters/%s/%s_%s_png.grf", character[characterID], character[characterID], sprite[characterID]);
-                characterID++;
+                if (charactersItem != 0) {
+                    strcpy(character[characterID], json_getPropertyValue(charactersItem, "character"));
+                    strcpy(sprite[characterID], json_getPropertyValue(charactersItem, "sprite"));
+                    sprintf(charSpritePath[characterID], "characters/%s/%s_%s_png.grf", character[characterID], character[characterID], sprite[characterID]);
+                    if (json_getProperty(charactersItem, "transform")) {
+                        strcpy(tnamea[characterID], json_getPropertyValue(charactersItem, "transform"));
+                    } else {
+                        strcpy(tnamea[characterID], "");
+                    }
+                    characterID++;
+                } else {
+                    strcpy(charSpritePath[characterID], "");
+                }
             }
             strcpy(textbox, json_getPropertyValue(scriptItem, "talking"));
         }
     }
-
-    NE_MaterialTexLoadGRF(sprMtl[1], sprPal[1], NE_TEXGEN_TEXCOORD, bgSpritePath);
-    NE_SpriteSetMaterial(spr[1], sprMtl[1]);
-
+    if (!strcmp(bgSpritePath, "") == 0) {
+        NE_MaterialDelete(sprMtl[1]);
+	    sprMtl[1] = NE_MaterialCreate();
+	    NE_PaletteDelete(sprPal[1]);
+	    sprPal[1] = NE_PaletteCreate();
+        NE_MaterialTexLoadGRF(sprMtl[1], sprPal[1], NE_TEXGEN_TEXCOORD, bgSpritePath);
+        NE_SpriteSetMaterial(spr[1], sprMtl[1]);
+    }
     for (int i = 0; i <= loadedCharacters; i++) {
-        NE_MaterialTexLoadGRF(sprMtl[2+i], sprPal[2+i], NE_TEXGEN_TEXCOORD, charSpritePath[i]);
-        NE_SpriteSetMaterial(spr[2+i], sprMtl[2+i]);
-        NE_SpriteVisible(spr[2+i], 1);
+        if (!strcmp(charSpritePath[i], "") == 0) {
+            NE_MaterialDelete(sprMtl[2+i]);
+	        sprMtl[2+i] = NE_MaterialCreate();
+	        NE_PaletteDelete(sprPal[2+i]);
+	        sprPal[2+i] = NE_PaletteCreate();
+            NE_MaterialTexLoadGRF(sprMtl[2+i], sprPal[2+i], NE_TEXGEN_TEXCOORD, charSpritePath[i]);
+            NE_SpriteSetMaterial(spr[2+i], sprMtl[2+i]);
+            NE_SpriteVisible(spr[2+i], 1);
+            tca[i] = screenFrames;
+        }
     }
     createTextbox(textbox);
     writeFormattedText(1, 0, 1, 3, text);
 }
 
 void advance(uint8 direction) {
-    NF_ClearTextLayer(1, 0);
-    NF_UnloadTiledBg("textbox");
     if (direction == 1 && scriptPosition < scriptMax) {
+        NF_ClearTextLayer(1, 0);
         scriptPosition++;
+        readScript();
     } else if (direction == 0 && 0 < scriptPosition) {
+        NF_ClearTextLayer(1, 0);
         scriptPosition--;
+        readScript();
     }
-    readScript();
 }

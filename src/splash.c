@@ -63,23 +63,19 @@ void controlSplash(void) {
       }
       NE_SpriteSetParams(spr[6], (122-screenFrames)*31/26, 0, NE_White);
       NE_SpriteSetParams(spr[7], (122-screenFrames)*31/26, 0, NE_White);
-    } else if (180 <= screenFrames && screenFrames < 210) {
+    } else if (180 <= screenFrames && screenFrames < 209) {
       NE_SpriteSetParams(spr[1], -(screenFrames-209)*31/29, 0, NE_White);
       NE_SpriteSetParams(spr[2], -(screenFrames-209)*31/29, 1, NE_White);
       NE_SpriteSetParams(spr[3], -(screenFrames-209)*31/29, 2, NE_White);
       NE_SpriteSetParams(spr[4], -(screenFrames-209)*31/29, 3, NE_White);
       NE_SpriteSetParams(spr[5], -(screenFrames-209)*31/29, 4, NE_White);
-    } else if (screenFrames == 210) {
-      NE_SpriteVisible(spr[1], 0);
-      NE_SpriteVisible(spr[2], 0);
-      NE_SpriteVisible(spr[3], 0);
-      NE_SpriteVisible(spr[4], 0);
-      NE_SpriteVisible(spr[5], 0);
-      NE_SpriteVisible(spr[6], 0);
-      NE_SpriteVisible(spr[7], 0);
+    } else if (screenFrames == 209) {
+      	for (int i = 1; i < 8; i++) {
+			NE_SpriteVisible(spr[i], 0);
+			NE_SpriteSetPos(spr[i], 256, 192);
+      	}
       //NE_SpriteDeleteAll();
     } else if (screenFrames == 255) {
-      //NE_End();
       setupMainMenu();
     }
 }
@@ -89,12 +85,12 @@ void setupSplash(void) {
     screenFrames = -30;
 
     for (int i = 0; i < 40; i++) {
-      NE_SpriteDelete(spr[9]);
-      NE_MaterialDelete(sprMtl[9]);
-      NE_PaletteDelete(sprPal[9]);
-      spr[9] = NE_SpriteCreate();
-      sprMtl[9] = NE_MaterialCreate();
-      sprPal[9] = NE_PaletteCreate();
+      NE_SpriteDelete(spr[i]);
+      NE_MaterialDelete(sprMtl[i]);
+      NE_PaletteDelete(sprPal[i]);
+      spr[i] = NE_SpriteCreate();
+      sprMtl[i] = NE_MaterialCreate();
+      sprPal[i] = NE_PaletteCreate();
     }
 
     NE_MaterialTexLoadGRF(sprMtl[0], sprPal[0], NE_TEXGEN_TEXCOORD, "images/blackcover_png.grf");

@@ -69,7 +69,6 @@ void setup2D(void) {
 
 int main(void) {
     // Initialize nitroFS before doing anything else
-    printf("Starting nitroFS...\n");
     if (!nitroFSInit(NULL)) {
         printf("Failed to start nitroFS\n");
         printf("Press START to exit\n");
@@ -96,7 +95,7 @@ int main(void) {
       	NE_Init3D();
     }
     
-    NE_InitConsole();
+    //NE_InitConsole();
 
     for (int i = 0; i < 40; i++) {
       	spr[i] = NE_SpriteCreate();
@@ -110,22 +109,20 @@ int main(void) {
     NF_InitRawSoundBuffers();
     while (1) {
       	//printf("\x1b[2J%d\n%d\n", NE_TextureFreeMem(), screenFrames);
-        NE_WaitForVBL(NE_UPDATE_GUI);
+        NE_WaitForVBL(NE_CAN_SKIP_VBL);
 		screenFrames++;
 		//oamUpdate(&oamSub);
         scanKeys();
         kHeld = keysHeld();
 		kDown = keysDown();
 		kUp = keysUp();
-        // Refresh shadow OAM copy
-        //NF_SpriteOamSet(1);
 
         // Draw 3D scene
-		if (strcmp(activeScreen, "mainmenu") == 0 || strcmp(activeScreen, "volumes") == 0) {
-          	NE_ProcessDual(draw3D_top, draw3D_bottom);
-		} else {
+        if (strcmp(activeScreen, "mainmenu") == 0) { controlMainMenu(); NE_ProcessDual(draw3D_top, draw3D_bottom); }
+        else if (strcmp(activeScreen, "volumes") == 0) { controlVolumeSelect(); NE_ProcessDual(draw3D_top, draw3D_bottom); }
+        else {
+            if (strcmp(activeScreen, "pl") == 0) controlPrologue();
 	  		NE_Process(draw3D_top);
-            NF_SpriteOamSet(1);
 			NF_UpdateTextLayers();
 		}
     }

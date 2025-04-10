@@ -10,6 +10,7 @@
 #include "prologue.h"
 #include "screens.h"
 #include "sound.h"
+#include "transforms.h"
 
 void controlPrologue(void) {
 	if (5 < screenFrames && screenFrames < 67) {
@@ -17,6 +18,12 @@ void controlPrologue(void) {
   	} else if (screenFrames == 67) {
 	   	NE_SpriteVisible(spr[0], 0);
   	}
+    inputPrologue();
+    playBGM(songPlaying);
+    transforms();
+    char buffer[6];
+    sprintf(buffer, "%d", scriptPosition);
+    NF_WriteText(1, 0, 0, 0, buffer);
 }
 
 void inputPrologue(void) {
@@ -62,15 +69,8 @@ void setupPrologue(void) {
 }
 
 void drawPrologue() {
-    controlPrologue();
-    inputPrologue();
-    playBGM(songPlaying);
-
     NE_SpriteDraw(spr[1]);
     NE_SpriteDraw(spr[2]);
 
     NE_SpriteDraw(spr[0]);
-    char buffer[6];
-    sprintf(buffer, "%d", scriptPosition);
-    NF_WriteText(1, 0, 0, 0, buffer);
 }

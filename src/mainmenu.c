@@ -11,7 +11,7 @@
 
 int mainMenuSelect;
 
-void mainMenuControl(void) {
+void controlMainMenu(void) {
     switch (mainMenuSelect) {
     	case 0:
       		NE_SpriteSetMaterialCanvas(spr[33], 0, 16, 71, 32);
@@ -98,6 +98,8 @@ void mainMenuControl(void) {
     } else if (screenFrames == 10) {
       	NE_SpriteVisible(spr[0], 0);
     }
+    playBGM("mainmenu");
+    inputMainMenu();
 }
 void inputMainMenu(void) {
     if (kUp & KEY_UP) {
@@ -129,8 +131,6 @@ void inputMainMenu(void) {
 }
 
 void setupMainMenu(void) {
-    
-  //NE_InitDual3D_DMA();
     
     strcpy(activeScreen, "mainmenu");
 
@@ -361,9 +361,6 @@ void setupMainMenu(void) {
 }
 
 void drawMainMenu(int screen) {
-    playBGM("mainmenu");
-    inputMainMenu();
-    mainMenuControl();
     if (5 < screenFrames) {
     NE_SpriteDraw(spr[1]); // table
     // top screen
@@ -374,40 +371,39 @@ void drawMainMenu(int screen) {
       	NE_SpriteDraw(spr[8]); // bytcon
       	NE_SpriteDraw(spr[12]); // occeus
       	NE_SpriteDraw(spr[14]); // raurou
-      NE_SpriteDraw(spr[16]); // necron
-      NE_SpriteDraw(spr[17]); // gerbat picture
-      NE_SpriteDraw(spr[19]); // valtel
-      NE_SpriteDraw(spr[21]); // glomer
-      NE_SpriteDraw(spr[22]); // grubname
-      NE_SpriteDraw(spr[24]); // crytum
-      NE_SpriteDraw(spr[26]); // clips
-      NE_SpriteDraw(spr[28]); // aumtzi
-      NE_SpriteDraw(spr[30]); // edolon
-      NE_SpriteDraw(spr[32]); // epilogue
+      	NE_SpriteDraw(spr[16]); // necron
+      	NE_SpriteDraw(spr[17]); // gerbat picture
+      	NE_SpriteDraw(spr[19]); // valtel
+      	NE_SpriteDraw(spr[21]); // glomer
+      	NE_SpriteDraw(spr[22]); // grubname
+      	NE_SpriteDraw(spr[24]); // crytum
+      	NE_SpriteDraw(spr[26]); // clips
+      	NE_SpriteDraw(spr[28]); // aumtzi
+      	NE_SpriteDraw(spr[30]); // edolon
+      	NE_SpriteDraw(spr[32]); // epilogue
     } else { // bottom screen
-      NE_SpriteDraw(spr[4]); // sestro lego
-      NE_SpriteDraw(spr[5]); // sestro notes
-      NE_SpriteDraw(spr[7]); // sirage
-      NE_SpriteDraw(spr[9]); // husske
-      NE_SpriteDraw(spr[10]); // endari
-      NE_SpriteDraw(spr[11]); // oricka
-      NE_SpriteDraw(spr[13]); // mshiri
-      NE_SpriteDraw(spr[15]); // cadlys
-      NE_SpriteDraw(spr[18]); // gerbat ball
-      NE_SpriteDraw(spr[20]); // sabine
-      NE_SpriteDraw(spr[23]); // cinare
-      NE_SpriteDraw(spr[25]); // hayyan
-      NE_SpriteDraw(spr[27]); // yeshin
-      NE_SpriteDraw(spr[29]); // seinru
-      NE_SpriteDraw(spr[31]); // al
-      NE_SpriteDraw(spr[33]); // start
-      NE_SpriteDraw(spr[34]); // load
-      NE_SpriteDraw(spr[35]); // options
-      NE_SpriteDraw(spr[36]); // trollodex
-      NE_SpriteDraw(spr[37]); // credits
-      NE_SpriteDraw(spr[38]); // exit
+      	NE_SpriteDraw(spr[4]); // sestro lego
+      	NE_SpriteDraw(spr[5]); // sestro notes
+      	NE_SpriteDraw(spr[7]); // sirage
+      	NE_SpriteDraw(spr[9]); // husske
+      	NE_SpriteDraw(spr[10]); // endari
+      	NE_SpriteDraw(spr[11]); // oricka
+      	NE_SpriteDraw(spr[13]); // mshiri
+      	NE_SpriteDraw(spr[15]); // cadlys
+      	NE_SpriteDraw(spr[18]); // gerbat ball
+      	NE_SpriteDraw(spr[20]); // sabine
+      	NE_SpriteDraw(spr[23]); // cinare
+      	NE_SpriteDraw(spr[25]); // hayyan
+      	NE_SpriteDraw(spr[27]); // yeshin
+      	NE_SpriteDraw(spr[29]); // seinru
+      	NE_SpriteDraw(spr[31]); // al
+      	NE_SpriteDraw(spr[33]); // start
+      	NE_SpriteDraw(spr[34]); // load
+      	NE_SpriteDraw(spr[35]); // options
+      	NE_SpriteDraw(spr[36]); // trollodex
+      	NE_SpriteDraw(spr[37]); // credits
+      	NE_SpriteDraw(spr[38]); // exit
     }
-    
     NE_SpriteDraw(spr[0]); // blackcover
     }
 }

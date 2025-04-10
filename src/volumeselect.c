@@ -13,7 +13,7 @@ int volumeSelect;
 int scroll;
 bool changed;
 
-void volumeSelectControl(void) {
+void controlVolumeSelect(void) {
     if (5 < screenFrames && screenFrames < 67) {
         if (noTransition) {
             screenFrames = 66;
@@ -53,6 +53,7 @@ void volumeSelectControl(void) {
 		    setupMainMenu();
 	    }
     }
+    inputVolumeSelect();
 }
 void inputVolumeSelect(void) {
     if (kUp & KEY_UP) {
@@ -130,8 +131,7 @@ void setupVolumeSelect(void) {
 }
 
 void drawVolumeSelect(int screen) {
-    volumeSelectControl();
-    inputVolumeSelect();
+
     NE_SpriteDraw(spr[1]);
 
     for (int i = 2; i < 16; i++) {

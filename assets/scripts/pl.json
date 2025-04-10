@@ -2,23 +2,114 @@
     "script": [ 
         { 
             "id": 0,
-            "type": "standard",
             "background": "warehouse",
+            "music": "secilytheme",
             "characters": [ 
-                {"character": "secily", "sprite": "sword_hold_speak"}
+                {"character": "secily", "sprite": "sword_hold_speak", "transform": "middle"}
             ],
             "talking": "secily",
             "dialogue": "1.e4 Go ahead, take it. ...e5"
         },
         { 
             "id": 1,
-            "type": "standard",
+            "background": "warehouse",
+            "characters": [
+                {"character": "secily", "sprite": "sword_hold", "transform": "twitch"}
+            ],
+            "talking": "narration",
+            "dialogue": "You proffer the dueling rapier, your second-best, to the ruffian. You took down his two mates easily enough, and now he's the last one standing. Unarmed and afraid."
+        },
+        { 
+            "id": 2,
             "background": "warehouse",
             "characters": [
                 {"character": "secily", "sprite": "sword_hold"}
             ],
             "talking": "narration",
-            "dialogue": "You proffer the dueling rapier, your second-best, to the ruffian. You took down his two mates easily enough, and now he's the last one standing. Unarmed and afraid."
+            "dialogue": "This is part of the ritual for you. He's not dying alone."
+        },
+        { 
+            "id": 3,
+            "background": "warehouse",
+            "characters": [
+                {"character": "secily", "sprite": "sword_hold_speak"}
+            ],
+            "talking": "secily",
+            "dialogue": "2.f4 It's not a trick. You know that. I'm sure all your ilk has heard of me. ...exf4"
+        },
+        { 
+            "id": 4,
+            "background": "warehouse",
+            "characters": [
+                {"character": "secily", "sprite": "sword_hold_speak"}
+            ],
+            "talking": "secily",
+            "dialogue": "3.Nf3 There we go, you even know how to hold it. ...Be7"
+        },
+        { 
+            "id": 5,
+            "background": "warehouse",
+            "characters": [
+                {"character": "secily", "sprite": "menacing_speak"}
+            ],
+            "talking": "secily",
+            "dialogue": "4.Bc4 Sometimes I get asked why I do this. ...Bh4+"
+        },
+        { 
+            "id": 6,
+            "background": "warehouse",
+            "characters": [
+                {"character": "secily", "sprite": "menacing"}
+            ],
+            "talking": "narration",
+            "dialogue": "He stands, eyes narrowed, and you touch the tips of your blades. Proper stance and all. You wish more smugglers had the touch of class this soul did."
+        },
+        { 
+            "id": 7,
+            "background": "warehouse",
+            "characters": [
+                {"character": "secily", "sprite": "menacing"}
+            ],
+            "talking": "narration",
+            "dialogue": "You almost feel bad for what's about to happen."
+        },
+        { 
+            "id": 8,
+            "background": "warehouse",
+            "characters": [
+                {"character": "secily", "sprite": "menacing"}
+            ],
+            "talking": "narration",
+            "dialogue": "Then you remember the document detailing the deaths caused by this counterfeit medicine lab, start to finish, like it was photocopied straight into your head."
+        },
+        { 
+            "id": 9,
+            "background": "warehouse",
+            "characters": [
+                {"character": "secily", "sprite": "menacing_speak"}
+            ],
+            "talking": "secily",
+            "dialogue": "5.g3 There're three reasons. Here's the first: it's only fair. Face to face, blade to blade, an honest chance. You deserve that. Everyone deserves that. If you die, you die with nobility. With courage. ...fxg3"
+        },
+        { 
+            "id": 10,
+            "background": "warehouse",
+            "music": "secilytheme",
+            "characters": [
+                {"character": "secily", "sprite": "sword_hold_speak"}
+            ],
+            "talking": "secily",
+            "dialogue": "6.O-O If you don't, you walk out of here the first man in twelve sweeps to win a duel with me. And that's something to fight for. ...gxh2+"
+        },
+        { 
+            "id": 11,
+            "background": "warehouse",
+            "music": "secilyfight",
+            "characters": [
+                {"character": "secily", "sprite": "en_garde"}
+            ],
+            "talking": "secily",
+            "dialogue": "7.Kh1 Allez! ...Be7"
         }
     ]
 }
