@@ -12,6 +12,7 @@
 int mainMenuSelect;
 
 void controlMainMenu(void) {
+    int td = screenFrames - tc;
     switch (mainMenuSelect) {
     	case 0:
       		NE_SpriteSetMaterialCanvas(spr[33], 0, 16, 71, 32);
@@ -62,7 +63,7 @@ void controlMainMenu(void) {
       		NE_SpriteSetMaterialCanvas(spr[38], 192, 48, 256, 64);
       		break;
     }
-    if (screenFrames - tc < 11 && !pressedA) {
+    if (td < 11 && !pressedA) {
       	NE_SpriteSetPos(spr[33+mainMenuSelect], 10+screenFrames-tc, 28+24*mainMenuSelect);
     }
     for (int i = 0; i < 6; i++) {
@@ -71,23 +72,23 @@ void controlMainMenu(void) {
       	}
     }
     if (mainMenuSelect == 0 && pressedA) {
-      	if (screenFrames - tc < 91) {
-			if ((1 < screenFrames - tc) && (kUp & KEY_A)) {
+      	if (td < 91) {
+			if ((1 < td) && (kUp & KEY_A)) {
 				screenFrames = tc + 89;
 				noTransition = 1;
 			}
-			NE_SpriteSetParams(spr[0], (screenFrames-tc)*31/90, 0, NE_White);
-			soundSetVolume(0, 127-(screenFrames-tc)*127/90);
-			soundSetVolume(1, 127-(screenFrames-tc)*127/90);
-      	} else if (screenFrames - tc == 91) {
+			NE_SpriteSetParams(spr[0], (td)*31/90, 0, NE_White);
+			soundSetVolume(0, 127-(td)*127/90);
+			soundSetVolume(1, 127-(td)*127/90);
+      	} else if (td == 91) {
 			setupVolumeSelect();
     	}
     } else if (mainMenuSelect == 5 && pressedA) {
-      	if (screenFrames - tc < 16) {
-			NE_SpriteSetParams(spr[0], 1+(screenFrames-tc)*2, 0, NE_White);
-			soundSetVolume(0, 127-(screenFrames-tc)*127/15);
-			soundSetVolume(1, 127-(screenFrames-tc)*127/15);
-      	} else if (screenFrames - tc == 20) {
+      	if (td < 16) {
+			NE_SpriteSetParams(spr[0], 1+(td)*2, 0, NE_White);
+			soundSetVolume(0, 127-(td)*127/15);
+			soundSetVolume(1, 127-(td)*127/15);
+      	} else if (td == 20) {
 			NE_End();
 			//exit(0);
 			systemShutDown();

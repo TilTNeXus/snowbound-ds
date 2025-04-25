@@ -11,7 +11,6 @@
 
 int volumeSelect;
 int scroll;
-bool changed;
 
 void controlVolumeSelect(void) {
     if (5 < screenFrames && screenFrames < 67) {
@@ -37,6 +36,10 @@ void controlVolumeSelect(void) {
     } else if (pressedA) {
         if (screenFrames - tc < 63) {
             NE_SpriteSetParams(spr[0], (screenFrames-tc)/2, 0, NE_White);
+            if ((1 < screenFrames - tc) && (kUp & KEY_A)) {
+				screenFrames = tc + 61;
+				noTransition = 1;
+			}
         } else if (screenFrames - tc == 63) {
 		    switch (volumeSelect) {
 			    case 0:
@@ -57,23 +60,27 @@ void controlVolumeSelect(void) {
 }
 void inputVolumeSelect(void) {
     if (kUp & KEY_UP) {
-      	tc = screenFrames;
-      	pressedA = 0;
-      	changed = 1;
-      	if (0 < volumeSelect) {
-			volumeSelect--;
-      	}
+        if (!pressedA) {
+            tc = screenFrames;
+            pressedA = 0;
+            changed = 1;
+            if (0 < volumeSelect) {
+              volumeSelect--;
+            }
+      }   
     } else if (kUp & KEY_DOWN) {
-      	tc = screenFrames;
-      	pressedA = 0;
-      	changed = 1;
-      	if (volumeSelect < 13) {
-			volumeSelect++;
-      	}
+        if (!pressedA) {
+      	    tc = screenFrames;
+      	    pressedA = 0;
+      	    changed = 1;
+      	    if (volumeSelect < 13) {
+		    	volumeSelect++;
+      	    }
+        }   
     } else if (kUp & KEY_A) {
-    	changed = 0;
+        if (!pressedA) tc = screenFrames;
+        changed = 0;
         pressedA = 1;
-    	tc = screenFrames;
         NE_SpriteVisible(spr[0], 1);
     } else if (kUp & KEY_B) {
     	changed = 0;

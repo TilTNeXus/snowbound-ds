@@ -17,7 +17,7 @@
 #include "prologue.h"
 
 int screenFrames = 0;
-char activeScreen[10] = "mainmenu";
+char activeScreen[10] = "splash";
 
 NE_Sprite *spr[40];
 NE_Material *sprMtl[40];
@@ -32,27 +32,32 @@ bool pressedA;
 bool pressedB;
 char songPlaying[20] = " ";
 bool noTransition = 0;
+bool changed = 0;
 
 void draw3D_top(void) {
     NE_2DViewInit();
     if (strcmp(activeScreen, "splash") == 0) {
-      	drawSplash();
+      	drawSplash(0);
     } else if (strcmp(activeScreen, "mainmenu") == 0) {
-      	drawMainMenu(1);
+      	drawMainMenu(0);
     } else if (strcmp(activeScreen, "volumes") == 0) {
-      	drawVolumeSelect(1);
+      	drawVolumeSelect(0);
     } else if (strcmp(activeScreen, "pl") == 0) {
-      	drawPrologue();
+      	drawPrologue(0);
     }
 }
 
 void draw3D_bottom(void) {
     NE_2DViewInit();
-    if (strcmp(activeScreen, "mainmenu") == 0) {
-      	drawMainMenu(0);
+    if (strcmp(activeScreen, "splash") == 0) {
+        drawSplash(1);
+    } if (strcmp(activeScreen, "mainmenu") == 0) {
+      	drawMainMenu(1);
     } else if (strcmp(activeScreen, "volumes") == 0) {
-      	drawVolumeSelect(0);
-    } 
+      	drawVolumeSelect(1);
+    } else if (strcmp(activeScreen, "pl") == 0) {
+        drawPrologue(1);
+  }
 }
 
 void setup2D(void) {
@@ -89,11 +94,7 @@ int main(void) {
     irqSet(IRQ_VBLANK, NE_VBLFunc);
     irqSet(IRQ_HBLANK, NE_HBLFunc);
     
-    if (strcmp(activeScreen, "mainmenu") == 0) {
-      	NE_InitDual3D();
-    } else {
-      	NE_Init3D();
-    }
+    NE_InitDual3D();
     
     //NE_InitConsole();
 
@@ -107,24 +108,25 @@ int main(void) {
 
     soundEnable();
     NF_InitRawSoundBuffers();
+    //NF_SpriteOamSet(1);
+    //setup2D();
     while (1) {
       	//printf("\x1b[2J%d\n%d\n", NE_TextureFreeMem(), screenFrames);
-        NE_WaitForVBL(NE_CAN_SKIP_VBL);
+        NE_WaitForVBL(0);
 		screenFrames++;
-		//oamUpdate(&oamSub);
         scanKeys();
         kHeld = keysHeld();
 		kDown = keysDown();
 		kUp = keysUp();
 
         // Draw 3D scene
-        if (strcmp(activeScreen, "mainmenu") == 0) { controlMainMenu(); NE_ProcessDual(draw3D_top, draw3D_bottom); }
-        else if (strcmp(activeScreen, "volumes") == 0) { controlVolumeSelect(); NE_ProcessDual(draw3D_top, draw3D_bottom); }
-        else {
-            if (strcmp(activeScreen, "pl") == 0) controlPrologue();
-	  		NE_Process(draw3D_top);
-			NF_UpdateTextLayers();
-		}
+        if (strcmp(activeScreen, "splash") == 0) controlSplash();
+        else if (strcmp(activeScreen, "mainmenu") == 0) controlMainMenu();
+        else if (strcmp(activeScreen, "volumes") == 0) controlVolumeSelect();
+        else if (strcmp(activeScreen, "pl") == 0) controlPrologue();
+        if (strcmp(activeScreen, "splash") != 0) NE_ProcessDual(draw3D_bottom, draw3D_top);
+        else NE_Process(draw3D_top);
+        
     }
     return 0;
 }

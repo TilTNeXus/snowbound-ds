@@ -30,13 +30,12 @@ void setupDialogue(char vol[]) {
 
     json_t jsonMemory[scriptLength];
     parent = json_create(script, jsonMemory, scriptLength);
-    //free(script);
 
     NF_DefineTextColor(1, 0, 0, 31, 31, 31); // white
     NF_DefineTextColor(1, 0, 1, 0, 0, 0); // black
 
     readScript();
-
+    
 }
 
 void createTextbox(char talking[]) {

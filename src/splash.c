@@ -149,16 +149,19 @@ void setupSplash(void) {
     NE_SpriteVisible(spr[7], 0);
 }
 
-void drawSplash(void) {
+void drawSplash(int screen) {
     if (kUp & KEY_A) {
       screenFrames = 255;
     }
-    NE_SpriteDraw(spr[1]);
-    NE_SpriteDraw(spr[2]);
-    NE_SpriteDraw(spr[3]);
-    NE_SpriteDraw(spr[4]);
-    NE_SpriteDraw(spr[5]);
-    NE_SpriteDraw(spr[6]);
-    NE_SpriteDraw(spr[7]);
-    controlSplash();
+    if (!screen) {
+      	NE_SpriteDraw(spr[1]);
+      	NE_SpriteDraw(spr[2]);
+    	NE_SpriteDraw(spr[3]);
+		NE_SpriteDraw(spr[4]);
+		NE_SpriteDraw(spr[5]);
+		NE_SpriteDraw(spr[6]);
+		NE_SpriteDraw(spr[7]);
+    } else {
+		NE_SpriteDraw(spr[0]);
+	}
 }

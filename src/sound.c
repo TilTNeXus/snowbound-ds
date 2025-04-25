@@ -17,19 +17,19 @@ void playBGM(char song[]) {
       	chunkLength = chunkFileSize/11025*60+13;
       	if ((screenFrames-musOffset)%(4*chunkLength) == 1) {
 			if (!NF_RAWSOUND[0].available) NF_UnloadRawSound(0);
-			NF_LoadRawSound("audio/music/menutheme.0", 0, 11025, 0);
+			NF_LoadRawSound("audio/music/menutheme/0", 0, 11025, 0);
 			NF_PlayRawSound(0, 127, 64, false, 0);
       	} else if ((screenFrames-musOffset)%(4*chunkLength) == chunkLength) {
 			if (!NF_RAWSOUND[0].available) NF_UnloadRawSound(0);
-			NF_LoadRawSound("audio/music/menutheme.1", 0, 11025, 0);
+			NF_LoadRawSound("audio/music/menutheme/1", 0, 11025, 0);
 			NF_PlayRawSound(0, 127, 64, false, 0);
       	} else if ((screenFrames-musOffset)%(4*chunkLength) == (2*chunkLength)) {
 			if (!NF_RAWSOUND[0].available) NF_UnloadRawSound(0);
-			NF_LoadRawSound("audio/music/menutheme.2", 0, 11025, 0);
+			NF_LoadRawSound("audio/music/menutheme/2", 0, 11025, 0);
 			NF_PlayRawSound(0, 127, 64, false, 0);
       	} else if ((screenFrames-musOffset)%(4*chunkLength) == (3*chunkLength)) {
 			if (!NF_RAWSOUND[0].available) NF_UnloadRawSound(0);
-			NF_LoadRawSound("audio/music/menutheme.3", 0, 11025, 0);
+			NF_LoadRawSound("audio/music/menutheme/3", 0, 11025, 0);
 			NF_PlayRawSound(0, 127, 64, false, 0);
     	}
     } else if (strcmp(song, "secilytheme") == 0) {

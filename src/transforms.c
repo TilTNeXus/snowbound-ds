@@ -10,6 +10,7 @@ void transforms(void) {
     for (int layer = 0; layer < 4; layer++) {
         if (strcmp(tnamea[layer], "middle") == 0) {
             NE_SpriteSetPos(spr[2+layer], 0, -37);
+            strcpy(tnamea[layer], "");
         } else if (strcmp(tnamea[layer], "twitch") == 0) {
             if (screenFrames - tca[layer] == 0) NE_SpriteSetPos(spr[2+layer], 0, -37);
             if (screenFrames - tca[layer] == 1) NE_SpriteSetPos(spr[2+layer], 1, -36);
