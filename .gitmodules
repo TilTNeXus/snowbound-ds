@@ -1,0 +1,3 @@
+[submodule "architectds"]
+	path = architectds
+	url = https://github.com/AntonioND/architectds.git
