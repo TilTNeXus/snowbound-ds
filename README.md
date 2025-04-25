@@ -7,7 +7,7 @@ Blood](https://deconreconstruction.itch.io/snowbound-blood) by
 * Rewritten with Nitro Engine and NFlib
 
 ## Build instructions
-* Install [BlocksDS](https://blocksds.skylyrac.net/docs/), Nitro Engine, NightFox's Lib, and [architectds](https://github.com/AntonioND/architectds)
+* Install [BlocksDS](https://blocksds.skylyrac.net/docs/), Nitro Engine, and NightFox's Lib
 * Clone this repository
 * run `python3 build.py`
 
