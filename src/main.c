@@ -22,6 +22,8 @@ char activeScreen[10] = "splash";
 NE_Sprite *spr[40];
 NE_Material *sprMtl[40];
 NE_Palette *sprPal[40];
+NE_Sprite *textSpr;
+NE_Material *textMtl = NULL;
 
 uint32_t kHeld;
 uint32_t kDown;
@@ -57,7 +59,7 @@ void draw3D_bottom(void) {
       	drawVolumeSelect(1);
     } else if (strcmp(activeScreen, "pl") == 0) {
         drawPrologue(1);
-  }
+    }
 }
 
 void setup2D(void) {
@@ -108,8 +110,11 @@ int main(void) {
 
     soundEnable();
     NF_InitRawSoundBuffers();
-    //NF_SpriteOamSet(1);
-    //setup2D();
+
+    NE_RichTextInit(0);
+    NE_RichTextMetadataLoadFAT(0, "font/avenir.fnt");
+    NE_RichTextMaterialLoadGRF(0, "font/avenir_0_png.grf");
+
     while (1) {
       	//printf("\x1b[2J%d\n%d\n", NE_TextureFreeMem(), screenFrames);
         NE_WaitForVBL(0);
@@ -124,9 +129,13 @@ int main(void) {
         else if (strcmp(activeScreen, "mainmenu") == 0) controlMainMenu();
         else if (strcmp(activeScreen, "volumes") == 0) controlVolumeSelect();
         else if (strcmp(activeScreen, "pl") == 0) controlPrologue();
-        if (strcmp(activeScreen, "splash") != 0) NE_ProcessDual(draw3D_bottom, draw3D_top);
-        else NE_Process(draw3D_top);
+        if (strcmp(activeScreen, "splash") != 0) {
+            NE_ProcessDual(draw3D_bottom, draw3D_top);
+        } else {
+            NE_Process(draw3D_top);
+        }
         
     }
+    //NE_RichTextEnd(0);
     return 0;
 }

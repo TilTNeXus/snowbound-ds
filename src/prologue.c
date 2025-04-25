@@ -25,9 +25,6 @@ void controlPrologue(void) {
     inputPrologue();
     playBGM(songPlaying);
     transforms();
-    char buffer[6];
-    sprintf(buffer, "%d", scriptPosition);
-    NF_WriteText(1, 0, 0, 0, buffer);
 }
 
 void inputPrologue(void) {
@@ -77,8 +74,6 @@ void drawPrologue(int screen) {
         NE_SpriteDraw(spr[1]);
         NE_SpriteDraw(spr[2]);
     } else {
-        ;
+        NE_RichTextRender3D(0, "You proffer the dueling rapier, your\nsecond-best, to the ruffian. You took down \nhis two mates easily enough, and now he's \nthe last one standing. Unarmed and afraid.", 8, 24);
     }
-
-    NE_SpriteDraw(spr[0]);
 }

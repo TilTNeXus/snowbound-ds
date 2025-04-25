@@ -31,8 +31,8 @@ void setupDialogue(char vol[]) {
     json_t jsonMemory[scriptLength];
     parent = json_create(script, jsonMemory, scriptLength);
 
-    NF_DefineTextColor(1, 0, 0, 31, 31, 31); // white
-    NF_DefineTextColor(1, 0, 1, 0, 0, 0); // black
+    //NF_DefineTextColor(1, 0, 0, 31, 31, 31); // white
+    //NF_DefineTextColor(1, 0, 1, 0, 0, 0); // black
 
     readScript();
     
@@ -138,17 +138,17 @@ void readScript(void) {
             tca[i] = screenFrames;
         }
     }
-    createTextbox(textbox);
-    writeFormattedText(1, 0, 1, 3, text);
+    //createTextbox(textbox);
+    //writeFormattedText(1, 0, 1, 3, text);
 }
 
 void advance(uint8 direction) {
     if (direction == 1 && scriptPosition < scriptMax) {
-        NF_ClearTextLayer(1, 0);
+        //NF_ClearTextLayer(1, 0);
         scriptPosition++;
         readScript();
     } else if (direction == 0 && 0 < scriptPosition) {
-        NF_ClearTextLayer(1, 0);
+        //NF_ClearTextLayer(1, 0);
         scriptPosition--;
         readScript();
     }
