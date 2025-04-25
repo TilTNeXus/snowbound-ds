@@ -1,3 +1,6 @@
 [submodule "architectds"]
 	path = architectds
 	url = https://github.com/AntonioND/architectds.git
+[submodule "src/tiny-json"]
+	path = src/tiny-json
+	url = https://github.com/rafagafe/tiny-json.git
