@@ -1,9 +1,20 @@
 #!/usr/bin/env python3
 
+import os
 import sys
 sys.path.insert(0, "architectds/architectds")
 from architectds import *
 import crc
+
+examplesdir = os.path.join("src", "tiny-json", "examples")
+if os.path.exists(examplesdir):
+    for file in os.listdir(examplesdir):
+        os.remove(os.path.join(examplesdir, file))
+
+testdir = os.path.join("src", "tiny-json", "test")
+if os.path.exists(testdir):
+    for file in os.listdir(testdir):
+        os.remove(os.path.join(testdir, file))
 
 nitrofs = NitroFS()
 nitrofs.add_files_unchanged(['assets/audio'], 'audio')
