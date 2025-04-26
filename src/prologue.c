@@ -40,7 +40,6 @@ void setupPrologue(void) {
     strcpy(activeScreen, "pl");
     strcpy(songPlaying, "secilytheme");
 
-    //setup2D();
 
     screenFrames = 0;
     scriptMax = 50;
@@ -64,8 +63,15 @@ void setupPrologue(void) {
     NE_SpriteSetPos(spr[2], 0, -37);
     NE_SpriteSetPriority(spr[2], 10);
 
-    //NF_LoadTiledBg("nf/table", "table", 256, 256);
-	//NF_CreateTiledBg(1, 3, "table");
+    NE_MaterialTexLoadGRF(sprMtl[10], sprPal[10], NE_TEXGEN_TEXCOORD, "backgrounds/mainmenu/layers/table_png.grf");
+    NE_SpriteSetMaterial(spr[10], sprMtl[10]);
+    NE_SpriteSetPos(spr[10], 0, 0);
+    NE_SpriteSetPriority(spr[10], 50);
+
+    NE_MaterialTexLoadGRF(sprMtl[11], sprPal[11], NE_TEXGEN_TEXCOORD, "gui/textbox/secily_png.grf");
+    NE_SpriteSetMaterial(spr[11], sprMtl[11]);
+    NE_SpriteSetPos(spr[11], 0, 0);
+    NE_SpriteSetPriority(spr[11], 49);
     
 }
 
@@ -74,6 +80,10 @@ void drawPrologue(int screen) {
         NE_SpriteDraw(spr[1]);
         NE_SpriteDraw(spr[2]);
     } else {
+        NE_SpriteDraw(spr[10]);
+        NE_SpriteDraw(spr[11]);
+        NE_RichTextRender3D(0, "You proffer the dueling rapier, your\nsecond-best, to the ruffian. You took down \nhis two mates easily enough, and now he's \nthe last one standing. Unarmed and afraid.", 8, 24);
         NE_RichTextRender3D(0, "You proffer the dueling rapier, your\nsecond-best, to the ruffian. You took down \nhis two mates easily enough, and now he's \nthe last one standing. Unarmed and afraid.", 8, 24);
     }
+    NE_SpriteDraw(spr[0]);
 }

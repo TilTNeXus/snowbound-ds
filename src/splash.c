@@ -6,77 +6,80 @@
 #include "screens.h"
 
 void controlSplash(void) {
+	if (kUp & KEY_A) {
+		screenFrames = 255;
+	}
     if (screenFrames < 6) {
-      NE_SpriteSetParams(spr[1], 0, 0, NE_White);
+      	NE_SpriteSetParams(spr[1], 0, 0, NE_White);
     } else if (6 <= screenFrames && screenFrames < 21) {
-      NE_SpriteSetParams(spr[1], (screenFrames-5)*31/15, 0, NE_White);
+      	NE_SpriteSetParams(spr[1], (screenFrames-5)*31/15, 0, NE_White);
     } else if (30 <= screenFrames && screenFrames < 45) {
-      NE_SpriteSetMaterialCanvas(spr[2], 0, 0, 40, (screenFrames-29)*85/15);
-      NE_SpriteSetSize(spr[2], 40, (screenFrames-29)*85/15);
+      	NE_SpriteSetMaterialCanvas(spr[2], 0, 0, 40, (screenFrames-29)*85/15);
+      	NE_SpriteSetSize(spr[2], 40, (screenFrames-29)*85/15);
     } else if (45 <= screenFrames && screenFrames < 60) {
-      NE_SpriteSetMaterialCanvas(spr[3], 40, 85, 80, 85-(screenFrames-44)*85/15);
-      NE_SpriteSetSize(spr[3], 40, -(screenFrames-44)*85/15);
+      	NE_SpriteSetMaterialCanvas(spr[3], 40, 85, 80, 85-(screenFrames-44)*85/15);
+      	NE_SpriteSetSize(spr[3], 40, -(screenFrames-44)*85/15);
     } else if (75 <= screenFrames && screenFrames < 79) {
-      NE_SpriteVisible(spr[4], 1);
-      NE_SpriteVisible(spr[5], 1);
-      NE_SpriteSetMaterialCanvas(spr[4], 0, 92, 64, 94);
-      NE_SpriteSetSize(spr[4], 64, 2);
-      NE_SpriteSetPos(spr[4], 56, 145);
-      NE_SpriteSetMaterialCanvas(spr[5], 0, 102, 81, 104);
-      NE_SpriteSetSize(spr[5], 81, 2);
-      NE_SpriteSetPos(spr[5], 120, 145);
+      	NE_SpriteVisible(spr[4], 1);
+      	NE_SpriteVisible(spr[5], 1);
+      	NE_SpriteSetMaterialCanvas(spr[4], 0, 92, 64, 94);
+      	NE_SpriteSetSize(spr[4], 64, 2);
+      	NE_SpriteSetPos(spr[4], 56, 145);
+      	NE_SpriteSetMaterialCanvas(spr[5], 0, 102, 81, 104);
+      	NE_SpriteSetSize(spr[5], 81, 2);
+      	NE_SpriteSetPos(spr[5], 120, 145);
     } else if (79 <= screenFrames && screenFrames < 83) {
-      NE_SpriteSetMaterialCanvas(spr[4], 0, 91, 64, 95);
-      NE_SpriteSetSize(spr[4], 64, 4);
-      NE_SpriteSetPos(spr[4], 56, 144);
-      NE_SpriteSetMaterialCanvas(spr[5], 0, 101, 81, 105);
-      NE_SpriteSetSize(spr[5], 81, 4);
-      NE_SpriteSetPos(spr[5], 120, 144);
+      	NE_SpriteSetMaterialCanvas(spr[4], 0, 91, 64, 95);
+      	NE_SpriteSetSize(spr[4], 64, 4);
+      	NE_SpriteSetPos(spr[4], 56, 144);
+      	NE_SpriteSetMaterialCanvas(spr[5], 0, 101, 81, 105);
+      	NE_SpriteSetSize(spr[5], 81, 4);
+      	NE_SpriteSetPos(spr[5], 120, 144);
     } else if (83 <= screenFrames && screenFrames < 87) {
-      NE_SpriteSetMaterialCanvas(spr[4], 0, 90, 64, 96);
-      NE_SpriteSetSize(spr[4], 64, 6);
-      NE_SpriteSetPos(spr[4], 56, 143);
-      NE_SpriteSetMaterialCanvas(spr[5], 0, 100, 81, 106);
-      NE_SpriteSetSize(spr[5], 81, 6);
-      NE_SpriteSetPos(spr[5], 120, 143);
+      	NE_SpriteSetMaterialCanvas(spr[4], 0, 90, 64, 96);
+      	NE_SpriteSetSize(spr[4], 64, 6);
+      	NE_SpriteSetPos(spr[4], 56, 143);
+      	NE_SpriteSetMaterialCanvas(spr[5], 0, 100, 81, 106);
+      	NE_SpriteSetSize(spr[5], 81, 6);
+      	NE_SpriteSetPos(spr[5], 120, 143);
     } else if (87 <= screenFrames && screenFrames < 91) {
-      NE_SpriteSetMaterialCanvas(spr[4], 0, 89, 64, 97);
-      NE_SpriteSetSize(spr[4], 64, 8);
-      NE_SpriteSetPos(spr[4], 56, 142);
-      NE_SpriteSetMaterialCanvas(spr[5], 0, 99, 81, 107);
-      NE_SpriteSetSize(spr[5], 81, 8);
-      NE_SpriteSetPos(spr[5], 120, 142);
+      	NE_SpriteSetMaterialCanvas(spr[4], 0, 89, 64, 97);
+      	NE_SpriteSetSize(spr[4], 64, 8);
+      	NE_SpriteSetPos(spr[4], 56, 142);
+      	NE_SpriteSetMaterialCanvas(spr[5], 0, 99, 81, 107);
+      	NE_SpriteSetSize(spr[5], 81, 8);
+      	NE_SpriteSetPos(spr[5], 120, 142);
     } else if (91 <= screenFrames && screenFrames < 96) {
-      NE_SpriteSetMaterialCanvas(spr[4], 0, 88, 64, 98);
-      NE_SpriteSetSize(spr[4], 64, 10);
-      NE_SpriteSetPos(spr[4], 56, 141);
-      NE_SpriteSetMaterialCanvas(spr[5], 0, 98, 81, 108);
-      NE_SpriteSetSize(spr[5], 81, 10);
-      NE_SpriteSetPos(spr[5], 120, 141);
+      	NE_SpriteSetMaterialCanvas(spr[4], 0, 88, 64, 98);
+      	NE_SpriteSetSize(spr[4], 64, 10);
+      	NE_SpriteSetPos(spr[4], 56, 141);
+      	NE_SpriteSetMaterialCanvas(spr[5], 0, 98, 81, 108);
+      	NE_SpriteSetSize(spr[5], 81, 10);
+      	NE_SpriteSetPos(spr[5], 120, 141);
     } else if (96 <= screenFrames && screenFrames < 122) {
-      if ((screenFrames & 1) == 0) {
-	NE_SpriteVisible(spr[6], 1);
-	NE_SpriteVisible(spr[7], 1);
-      } else {
-	NE_SpriteVisible(spr[6], 0);
-	NE_SpriteVisible(spr[7], 0);
-      }
-      NE_SpriteSetParams(spr[6], (122-screenFrames)*31/26, 0, NE_White);
-      NE_SpriteSetParams(spr[7], (122-screenFrames)*31/26, 0, NE_White);
+      	if ((screenFrames & 1) == 0) {
+	      	NE_SpriteVisible(spr[6], 1);
+	      	NE_SpriteVisible(spr[7], 1);
+      	} else {
+	      	NE_SpriteVisible(spr[6], 0);
+	      	NE_SpriteVisible(spr[7], 0);
+      	}
+      	NE_SpriteSetParams(spr[6], (122-screenFrames)*31/26, 0, NE_White);
+      	NE_SpriteSetParams(spr[7], (122-screenFrames)*31/26, 0, NE_White);
     } else if (180 <= screenFrames && screenFrames < 209) {
-      NE_SpriteSetParams(spr[1], -(screenFrames-209)*31/29, 0, NE_White);
-      NE_SpriteSetParams(spr[2], -(screenFrames-209)*31/29, 1, NE_White);
-      NE_SpriteSetParams(spr[3], -(screenFrames-209)*31/29, 2, NE_White);
-      NE_SpriteSetParams(spr[4], -(screenFrames-209)*31/29, 3, NE_White);
-      NE_SpriteSetParams(spr[5], -(screenFrames-209)*31/29, 4, NE_White);
+      	NE_SpriteSetParams(spr[1], -(screenFrames-209)*31/29, 0, NE_White);
+      	NE_SpriteSetParams(spr[2], -(screenFrames-209)*31/29, 1, NE_White);
+      	NE_SpriteSetParams(spr[3], -(screenFrames-209)*31/29, 2, NE_White);
+      	NE_SpriteSetParams(spr[4], -(screenFrames-209)*31/29, 3, NE_White);
+      	NE_SpriteSetParams(spr[5], -(screenFrames-209)*31/29, 4, NE_White);
     } else if (screenFrames == 209) {
       	for (int i = 1; i < 8; i++) {
 			NE_SpriteVisible(spr[i], 0);
 			NE_SpriteSetPos(spr[i], 256, 192);
       	}
-      //NE_SpriteDeleteAll();
+      	//NE_SpriteDeleteAll();
     } else if (screenFrames == 255) {
-      setupMainMenu();
+      	setupMainMenu();
     }
 }
 void setupSplash(void) {
@@ -150,9 +153,6 @@ void setupSplash(void) {
 }
 
 void drawSplash(int screen) {
-    if (kUp & KEY_A) {
-      screenFrames = 255;
-    }
     if (!screen) {
       	NE_SpriteDraw(spr[1]);
       	NE_SpriteDraw(spr[2]);
