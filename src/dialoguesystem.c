@@ -9,6 +9,7 @@ uint16 scriptPosition;
 json_t const* parent;
 char volume[6];
 uint16 scriptMax;
+char activeDialogue[300];
 
 void setupDialogue(char vol[]) {
     
@@ -51,23 +52,25 @@ void createTextbox(char talking[]) {
 }
 
 void writeFormattedText(int scr, int layer, int x, int y, char s[]) {
+    strcpy(activeDialogue, "");
     char out[1000];
     strcpy(out, s);
     char* word = strtok(out, " ");
     char line[40] = "";
     while (word) {
-        if(strlen(line)+strlen(word)<=30-x){
+        if(strlen(line)+strlen(word)<=40-x){
             strcat(line,word);
             strcat(line," ");
         } else {
-            NF_WriteText(scr, layer, x, y, line);
+            strcat(activeDialogue, line);
+            strcat(activeDialogue, "\n");
             strcpy(line, word);
             strcat(line, " ");
             y++;
         }
         word = strtok(NULL, " ");
     }
-    NF_WriteText(scr, layer, x, y, line);
+    strcat(activeDialogue, line);
 }
 
 void readScript(void) {
@@ -139,7 +142,7 @@ void readScript(void) {
         }
     }
     //createTextbox(textbox);
-    //writeFormattedText(1, 0, 1, 3, text);
+    writeFormattedText(1, 0, 1, 3, text);
 }
 
 void advance(uint8 direction) {

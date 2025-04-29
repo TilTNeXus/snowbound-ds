@@ -82,8 +82,7 @@ void drawPrologue(int screen) {
     } else {
         NE_SpriteDraw(spr[10]);
         NE_SpriteDraw(spr[11]);
-        NE_RichTextRender3D(0, "You proffer the dueling rapier, your\nsecond-best, to the ruffian. You took down \nhis two mates easily enough, and now he's \nthe last one standing. Unarmed and afraid.", 8, 24);
-        NE_RichTextRender3D(0, "You proffer the dueling rapier, your\nsecond-best, to the ruffian. You took down \nhis two mates easily enough, and now he's \nthe last one standing. Unarmed and afraid.", 8, 24);
+        NE_RichTextRender3D(0, activeDialogue, 10, 24);
     }
     NE_SpriteDraw(spr[0]);
 }

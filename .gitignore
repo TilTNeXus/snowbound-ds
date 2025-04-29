@@ -3,3 +3,5 @@
 .vscode/
 .DS_store
 build/
+architectds/
+src/tiny-json/
