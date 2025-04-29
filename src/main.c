@@ -112,8 +112,8 @@ int main(void) {
     NF_InitRawSoundBuffers();
 
     NE_RichTextInit(0);
-    NE_RichTextMetadataLoadFAT(0, "font/avenir.fnt");
-    NE_RichTextMaterialLoadGRF(0, "font/avenir_0_png.grf");
+    NE_RichTextMetadataLoadFAT(0, "font/ndsbios.fnt");
+    NE_RichTextMaterialLoadGRF(0, "font/ndsbios_0_png.grf");
 
     while (1) {
       	//printf("\x1b[2J%d\n%d\n", NE_TextureFreeMem(), screenFrames);
