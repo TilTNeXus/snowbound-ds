@@ -18,6 +18,7 @@ extern bool pressedA;
 extern bool pressedB;
 extern bool changed;
 extern bool noTransition;
+extern FILE *fnt;
 
 void draw3D_top(void);
 void draw3D_bottom(void);

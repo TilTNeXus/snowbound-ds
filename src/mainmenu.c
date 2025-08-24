@@ -77,7 +77,7 @@ void controlMainMenu(void) {
 				screenFrames = tc + 89;
 				noTransition = 1;
 			}
-			NE_SpriteSetParams(spr[0], (td)*31/90, 0, NE_White);
+			spr[0]->alpha = (td)*31/90;
 			soundSetVolume(0, 127-(td)*127/90);
 			soundSetVolume(1, 127-(td)*127/90);
       	} else if (td == 91) {
@@ -85,7 +85,7 @@ void controlMainMenu(void) {
     	}
     } else if (mainMenuSelect == 5 && pressedA) {
       	if (td < 16) {
-			NE_SpriteSetParams(spr[0], 1+(td)*2, 0, NE_White);
+			spr[0]->alpha = 1+(td)*2;
 			soundSetVolume(0, 127-(td)*127/15);
 			soundSetVolume(1, 127-(td)*127/15);
       	} else if (td == 20) {
@@ -116,7 +116,7 @@ void inputMainMenu(void) {
     } else if (kUp & KEY_DOWN) {
       	if (!pressedA) {
 			tc = screenFrames;
-			NE_SpriteVisible(spr[0], 0);
+			//NE_SpriteVisible(spr[0], 0);
 			if (mainMenuSelect < 5) {
 	  			mainMenuSelect++;
 			} else {

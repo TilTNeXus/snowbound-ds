@@ -35,6 +35,7 @@ bool pressedB;
 char songPlaying[20] = " ";
 bool noTransition = 0;
 bool changed = 0;
+FILE *fnt;
 
 void draw3D_top(void) {
     NE_2DViewInit();
@@ -111,6 +112,8 @@ int main(void) {
     soundEnable();
     NF_InitRawSoundBuffers();
 
+    fnt = fopen("font/ndsbios.fnt", "rb");
+
     NE_RichTextInit(0);
     NE_RichTextMetadataLoadFAT(0, "font/ndsbios.fnt");
     NE_RichTextMaterialLoadGRF(0, "font/ndsbios_0_png.grf");
@@ -137,5 +140,6 @@ int main(void) {
         
     }
     //NE_RichTextEnd(0);
+    fclose(fnt);
     return 0;
 }

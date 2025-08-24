@@ -75,7 +75,7 @@ void controlSplash(void) {
     } else if (screenFrames == 209) {
       	for (int i = 1; i < 8; i++) {
 			NE_SpriteVisible(spr[i], 0);
-			NE_SpriteSetPos(spr[i], 256, 192);
+			//NE_SpriteSetPos(spr[i], 256, 192);
       	}
       	//NE_SpriteDeleteAll();
     } else if (screenFrames == 255) {

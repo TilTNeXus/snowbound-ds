@@ -51,19 +51,44 @@ void createTextbox(char talking[]) {
     NF_CreateTiledBg(1, 2, "textbox");
 }
 
+int charWidth(char c) {
+    u32 codepoint = (u32)c;
+    fseek(fnt, 93, SEEK_SET);
+    u32 id = 0;
+	u32 w = 0;
+	while (ftell(fnt) < 3373 && w == 0) {
+	    fread(&id, 4, 1, fnt);
+	    if (codepoint == id) {
+		    fseek(fnt, 12, SEEK_CUR);
+            fread(&w, 2, 1, fnt);
+	    } else {
+		    fseek(fnt, 16, SEEK_CUR);
+	    }
+	}
+    return w;
+}
+
 void writeFormattedText(int scr, int layer, int x, int y, char s[]) {
     strcpy(activeDialogue, "");
     char out[1000];
     strcpy(out, s);
     char* word = strtok(out, " ");
     char line[40] = "";
+    int lineWidth = 0;
     while (word) {
-        if(strlen(line)+strlen(word)<=40-x){
+        int wordWidth = 0;
+        for (int i = 0; i < strlen(word); i++) {
+            wordWidth += charWidth(word[i]);
+        }
+        lineWidth += wordWidth;
+        if(lineWidth+wordWidth<=260-x){
             strcat(line,word);
             strcat(line," ");
+            lineWidth += 3;
         } else {
             strcat(activeDialogue, line);
             strcat(activeDialogue, "\n");
+            lineWidth = 0;
             strcpy(line, word);
             strcat(line, " ");
             y++;
