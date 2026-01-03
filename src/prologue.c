@@ -56,32 +56,29 @@ void setupPrologue(void) {
 
     setupDialogue("pl");
     NE_SpriteVisible(spr[0], 1);
-    
+
+    NE_MaterialTexLoadGRF(sprMtl[1], sprPal[1], NE_TEXGEN_TEXCOORD, "gui/textbox/secily_png.grf");
+    NE_SpriteSetMaterial(spr[1], sprMtl[1]);
     NE_SpriteSetPos(spr[1], 0, 0);
-    NE_SpriteSetPriority(spr[1], 50);
-
-    NE_SpriteSetPos(spr[2], 0, -37);
-    NE_SpriteSetPriority(spr[2], 10);
-
-    NE_MaterialTexLoadGRF(sprMtl[10], sprPal[10], NE_TEXGEN_TEXCOORD, "backgrounds/mainmenu/layers/table_png.grf");
-    NE_SpriteSetMaterial(spr[10], sprMtl[10]);
-    NE_SpriteSetPos(spr[10], 0, 0);
-    NE_SpriteSetPriority(spr[10], 50);
-
-    NE_MaterialTexLoadGRF(sprMtl[11], sprPal[11], NE_TEXGEN_TEXCOORD, "gui/textbox/secily_png.grf");
-    NE_SpriteSetMaterial(spr[11], sprMtl[11]);
-    NE_SpriteSetPos(spr[11], 0, 0);
-    NE_SpriteSetPriority(spr[11], 49);
+    NE_SpriteSetPriority(spr[1], 49);
+    
+    NE_MaterialTexLoadGRF(sprMtl[2], sprPal[2], NE_TEXGEN_TEXCOORD, "backgrounds/mainmenu/layers/table_png.grf");
+    NE_SpriteSetMaterial(spr[2], sprMtl[2]);
+    NE_SpriteSetPos(spr[2], 0, 0);
+    NE_SpriteSetPriority(spr[2], 50);
+    
     
 }
 
 void drawPrologue(int screen) {
     if (!screen) {
+        // top screen
+        NE_SpriteDraw(*activeBGSprite.sprite);
+        NE_SpriteDraw(*onScreenCharSprites[0].sprite);
+    } else {
+        // bottom screen
         NE_SpriteDraw(spr[1]);
         NE_SpriteDraw(spr[2]);
-    } else {
-        NE_SpriteDraw(spr[10]);
-        NE_SpriteDraw(spr[11]);
         NE_RichTextRender3D(0, activeDialogue, 10, 24);
     }
     NE_SpriteDraw(spr[0]);

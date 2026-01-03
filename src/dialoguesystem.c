@@ -10,6 +10,82 @@ json_t const* parent;
 char volume[6];
 uint16 scriptMax;
 char activeDialogue[300];
+int startSprite = 3;
+
+/*  go through the script, get every unique character sprite and background, 
+    store pointers to sprites, materials, and palettes alongside the name to identify them for later use
+*/
+void loadSprites(void) {
+    
+    loadedCharSprites = 0;
+    for (json_t const* scriptItem = json_getChild(json_getProperty(parent, "script")); scriptItem != 0; scriptItem = json_getSibling(scriptItem)) {
+        char bgName[32];
+        char bgPath[64];
+        strcpy(bgName, json_getPropertyValue(scriptItem, "bg"));
+        sprintf(bgPath, "backgrounds/%s/%s_png.grf", volume, bgName);
+        bool hasBeenLoaded = 0;
+        for (int i = 0; i < MAX_CHARSPRITES; i++) {
+            if (strcmp(charSprites[i].name, bgName) == 0) {
+                hasBeenLoaded = 1;
+                break;
+            }
+        }
+        if (!hasBeenLoaded) {
+            NE_MaterialDelete(sprMtl[startSprite+loadedCharSprites]);
+            sprMtl[startSprite+loadedCharSprites] = NE_MaterialCreate();
+            NE_PaletteDelete(sprPal[startSprite+loadedCharSprites]);
+            sprPal[startSprite+loadedCharSprites] = NE_PaletteCreate();
+            NE_MaterialTexLoadGRF(sprMtl[startSprite+loadedCharSprites], sprPal[startSprite+loadedCharSprites], NE_TEXGEN_TEXCOORD, bgPath);
+            NE_SpriteSetMaterial(spr[startSprite+loadedCharSprites], sprMtl[startSprite+loadedCharSprites]);
+            NE_SpriteVisible(spr[startSprite+loadedCharSprites], 1);
+            NE_SpriteSetPos(spr[startSprite+loadedCharSprites], 0, 0);
+            NE_SpriteSetPriority(spr[startSprite+loadedCharSprites], 50);
+            charSprites[loadedCharSprites].sprite = &spr[startSprite+loadedCharSprites];
+            charSprites[loadedCharSprites].mtl = &sprMtl[startSprite+loadedCharSprites];
+            charSprites[loadedCharSprites].pal = &sprPal[startSprite+loadedCharSprites];
+            strcpy(charSprites[loadedCharSprites].name, bgName);
+            loadedCharSprites++;
+        }
+
+        for (json_t const* charactersItem = json_getChild(json_getProperty(scriptItem, "chrs")); charactersItem != 0; charactersItem = json_getSibling(charactersItem)) {
+            char charSpriteName[32];
+            char charSpritePath[64];
+            char charName[16];
+            char charSprite[32];
+            if (charactersItem != 0) {
+                strcpy(charName, json_getPropertyValue(charactersItem, "chr"));
+                strcpy(charSprite, json_getPropertyValue(charactersItem, "spr"));
+                sprintf(charSpriteName, "%s_%s", charName, charSprite);
+                sprintf(charSpritePath, "characters/%s/%s_png.grf", charName, charSpriteName);
+
+                hasBeenLoaded = 0;
+                for (int i = 0; i < MAX_CHARSPRITES; i++) {
+                    if (strcmp(charSprites[i].name, charSpriteName) == 0) {
+                        hasBeenLoaded = 1;
+                        break;
+                    }
+                }
+
+                if (!hasBeenLoaded) {
+                    NE_MaterialDelete(sprMtl[startSprite+loadedCharSprites]);
+                    sprMtl[startSprite+loadedCharSprites] = NE_MaterialCreate();
+                    NE_PaletteDelete(sprPal[startSprite+loadedCharSprites]);
+                    sprPal[startSprite+loadedCharSprites] = NE_PaletteCreate();
+                    NE_MaterialTexLoadGRF(sprMtl[startSprite+loadedCharSprites], sprPal[startSprite+loadedCharSprites], NE_TEXGEN_TEXCOORD, charSpritePath);
+                    NE_SpriteSetMaterial(spr[startSprite+loadedCharSprites], sprMtl[startSprite+loadedCharSprites]);
+                    NE_SpriteVisible(spr[startSprite+loadedCharSprites], 1);
+                    NE_SpriteSetPos(spr[startSprite+loadedCharSprites], 0, -37);
+                    NE_SpriteSetPriority(spr[startSprite+loadedCharSprites], 10);
+                    charSprites[loadedCharSprites].sprite = &spr[startSprite+loadedCharSprites];
+                    charSprites[loadedCharSprites].mtl = &sprMtl[startSprite+loadedCharSprites];
+                    charSprites[loadedCharSprites].pal = &sprPal[startSprite+loadedCharSprites];
+                    strcpy(charSprites[loadedCharSprites].name, charSpriteName);
+                    loadedCharSprites++;
+                }
+            }
+        }
+    }
+}
 
 void setupDialogue(char vol[]) {
     
@@ -31,9 +107,7 @@ void setupDialogue(char vol[]) {
 
     json_t jsonMemory[scriptLength];
     parent = json_create(script, jsonMemory, scriptLength);
-
-    //NF_DefineTextColor(1, 0, 0, 31, 31, 31); // white
-    //NF_DefineTextColor(1, 0, 1, 0, 0, 0); // black
+    loadSprites();
 
     readScript();
     
@@ -100,8 +174,8 @@ void writeFormattedText(int scr, int layer, int x, int y, char s[]) {
 
 void readScript(void) {
 
-    char bgSpritePath[100];
-    char charSpritePath[4][100];
+    char bgName[100];
+    char charSpriteName[4][100];
     char character[4][16];
     char sprite[4][32];
     char textbox[16];
@@ -109,17 +183,18 @@ void readScript(void) {
     uint8 characterID;
     uint8 loadedCharacters = 0;
 
+    int id = 0;
     for (json_t const* scriptItem = json_getChild(json_getProperty(parent, "script")); scriptItem != 0; scriptItem = json_getSibling(scriptItem)) {
-        if (json_getInteger(json_getProperty(scriptItem, "id")) == scriptPosition) {
-            strcpy(text, json_getPropertyValue(scriptItem, "dialogue"));
-            if (json_getProperty(scriptItem, "background")) {
-                sprintf(bgSpritePath, "backgrounds/%s/%s_png.grf", volume, json_getPropertyValue(scriptItem, "background"));
+        if (id == scriptPosition) {
+            strcpy(text, json_getPropertyValue(scriptItem, "say"));
+            if (json_getProperty(scriptItem, "bg")) {
+                sprintf(bgName, "%s", json_getPropertyValue(scriptItem, "bg"));
             } else {
-                strcpy(bgSpritePath, "");
+                strcpy(bgName, "");
             }
-            if (json_getProperty(scriptItem, "music")) {
-                if (strcmp(songPlaying, json_getPropertyValue(scriptItem, "music")) != 0) {
-                    strcpy(songPlaying, json_getPropertyValue(scriptItem, "music"));
+            if (json_getProperty(scriptItem, "mus")) {
+                if (strcmp(songPlaying, json_getPropertyValue(scriptItem, "mus")) != 0) {
+                    strcpy(songPlaying, json_getPropertyValue(scriptItem, "mus"));
                     musOffset = screenFrames;
                     soundKill(0);
                     soundKill(1);
@@ -127,56 +202,50 @@ void readScript(void) {
                 }
             }
             characterID = 0;
-            for (json_t const* charactersItem = json_getChild(json_getProperty(scriptItem, "characters")); charactersItem != 0; charactersItem = json_getSibling(charactersItem)) {
+            for (json_t const* charactersItem = json_getChild(json_getProperty(scriptItem, "chrs")); charactersItem != 0; charactersItem = json_getSibling(charactersItem)) {
                 loadedCharacters = characterID;
                 if (charactersItem != 0) {
-                    strcpy(character[characterID], json_getPropertyValue(charactersItem, "character"));
-                    strcpy(sprite[characterID], json_getPropertyValue(charactersItem, "sprite"));
-                    sprintf(charSpritePath[characterID], "characters/%s/%s_%s_png.grf", character[characterID], character[characterID], sprite[characterID]);
-                    if (json_getProperty(charactersItem, "transform")) {
-                        strcpy(tnamea[characterID], json_getPropertyValue(charactersItem, "transform"));
+                    strcpy(character[characterID], json_getPropertyValue(charactersItem, "chr"));
+                    strcpy(sprite[characterID], json_getPropertyValue(charactersItem, "spr"));
+                    sprintf(charSpriteName[characterID], "%s_%s", character[characterID], sprite[characterID]);
+                    if (json_getProperty(charactersItem, "trans")) {
+                        strcpy(tnamea[characterID], json_getPropertyValue(charactersItem, "trans"));
                     } else {
                         strcpy(tnamea[characterID], "");
                     }
                     characterID++;
-                } else {
-                    strcpy(charSpritePath[characterID], "");
-                }
+                } 
             }
-            strcpy(textbox, json_getPropertyValue(scriptItem, "talking"));
+            strcpy(textbox, json_getPropertyValue(scriptItem, "box"));
+        }
+        id++;
+    }
+    if (!strcmp(bgName, "") == 0) {
+        for (int i = 0; i < MAX_CHARSPRITES; i++) {
+            if (strcmp(charSprites[i].name, bgName) == 0) {
+                activeBGSprite.sprite = charSprites[i].sprite;
+                break;
+            }
         }
     }
-    if (!strcmp(bgSpritePath, "") == 0) {
-        NE_MaterialDelete(sprMtl[1]);
-	    sprMtl[1] = NE_MaterialCreate();
-	    NE_PaletteDelete(sprPal[1]);
-	    sprPal[1] = NE_PaletteCreate();
-        NE_MaterialTexLoadGRF(sprMtl[1], sprPal[1], NE_TEXGEN_TEXCOORD, bgSpritePath);
-        NE_SpriteSetMaterial(spr[1], sprMtl[1]);
-    }
     for (int i = 0; i <= loadedCharacters; i++) {
-        if (!strcmp(charSpritePath[i], "") == 0) {
-            NE_MaterialDelete(sprMtl[2+i]);
-	        sprMtl[2+i] = NE_MaterialCreate();
-	        NE_PaletteDelete(sprPal[2+i]);
-	        sprPal[2+i] = NE_PaletteCreate();
-            NE_MaterialTexLoadGRF(sprMtl[2+i], sprPal[2+i], NE_TEXGEN_TEXCOORD, charSpritePath[i]);
-            NE_SpriteSetMaterial(spr[2+i], sprMtl[2+i]);
-            NE_SpriteVisible(spr[2+i], 1);
-            tca[i] = screenFrames;
+        for (int j = 0; j < MAX_CHARSPRITES; j++) {
+            if (strcmp(charSprites[j].name, charSpriteName[i]) == 0) {
+                onScreenCharSprites[i].sprite = charSprites[j].sprite;
+                break;
+            }
         }
     }
     //createTextbox(textbox);
-    writeFormattedText(1, 0, 1, 3, text);
+    //writeFormattedText(1, 0, 1, 3, text);
 }
+
 
 void advance(uint8 direction) {
     if (direction == 1 && scriptPosition < scriptMax) {
-        //NF_ClearTextLayer(1, 0);
         scriptPosition++;
         readScript();
     } else if (direction == 0 && 0 < scriptPosition) {
-        //NF_ClearTextLayer(1, 0);
         scriptPosition--;
         readScript();
     }

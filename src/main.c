@@ -24,6 +24,10 @@ NE_Material *sprMtl[40];
 NE_Palette *sprPal[40];
 NE_Sprite *textSpr;
 NE_Material *textMtl = NULL;
+charSprite_t charSprites[MAX_CHARSPRITES];
+int loadedCharSprites = 0;
+charSprite_t onScreenCharSprites[4];
+charSprite_t activeBGSprite;
 
 uint32_t kHeld;
 uint32_t kDown;
