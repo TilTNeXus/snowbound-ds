@@ -21,16 +21,14 @@ extern bool noTransition;
 extern FILE *fnt;
 
 typedef struct charSprite_t {
-    NE_Sprite **sprite;
-    NE_Material **mtl;
-    NE_Palette **pal;
+    NE_Sprite *sprite;
+    NE_Material *mtl;
+    NE_Palette *pal;
     char name[32];
 } charSprite_t;
 #define MAX_CHARSPRITES 32
 extern charSprite_t charSprites[MAX_CHARSPRITES];
-extern int loadedCharSprites;
-extern charSprite_t onScreenCharSprites[4];
-extern charSprite_t activeBGSprite;
+extern uint8_t loadedSprites;
 
 void draw3D_top(void);
 void draw3D_bottom(void);

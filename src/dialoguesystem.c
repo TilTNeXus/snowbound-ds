@@ -9,81 +9,119 @@ uint16 scriptPosition;
 json_t const* parent;
 char volume[6];
 uint16 scriptMax;
-char activeDialogue[300];
 int startSprite = 3;
+scriptElement *scriptArray = NULL;
 
 /*  go through the script, get every unique character sprite and background, 
     store pointers to sprites, materials, and palettes alongside the name to identify them for later use
+    then store pointers to those in an array for each position of the script
 */
 void loadSprites(void) {
     
-    loadedCharSprites = 0;
+    loadedSprites = 0;
+    // get length of script and allocate
+    int scriptCounter = 0;
     for (json_t const* scriptItem = json_getChild(json_getProperty(parent, "script")); scriptItem != 0; scriptItem = json_getSibling(scriptItem)) {
+        scriptCounter++;
+    }
+    if (scriptArray != NULL) free(scriptArray);
+    scriptArray = malloc((scriptCounter+1)*sizeof(scriptElement));
+    
+    scriptCounter = 0;
+    for (json_t const* scriptItem = json_getChild(json_getProperty(parent, "script")); scriptItem != 0; scriptItem = json_getSibling(scriptItem)) {
+        bool hasBeenLoaded = 0;
+        
+        // loading backgrounds
         char bgName[32];
         char bgPath[64];
-        strcpy(bgName, json_getPropertyValue(scriptItem, "bg"));
-        sprintf(bgPath, "backgrounds/%s/%s_png.grf", volume, bgName);
-        bool hasBeenLoaded = 0;
-        for (int i = 0; i < MAX_CHARSPRITES; i++) {
+        snprintf(bgName, 31, json_getPropertyValue(scriptItem, "bg"));
+        snprintf(bgPath, 63, "backgrounds/%s/%s_png.grf", volume, bgName);
+        // search through the loaded sprites to see if this background has already been loaded
+        for (int i = 0; i < loadedSprites; i++) {
             if (strcmp(charSprites[i].name, bgName) == 0) {
                 hasBeenLoaded = 1;
+                scriptArray[scriptCounter].bg = &charSprites[i];
                 break;
             }
         }
+        // if the bg has not been loaded, then load it
         if (!hasBeenLoaded) {
-            NE_MaterialDelete(sprMtl[startSprite+loadedCharSprites]);
-            sprMtl[startSprite+loadedCharSprites] = NE_MaterialCreate();
-            NE_PaletteDelete(sprPal[startSprite+loadedCharSprites]);
-            sprPal[startSprite+loadedCharSprites] = NE_PaletteCreate();
-            NE_MaterialTexLoadGRF(sprMtl[startSprite+loadedCharSprites], sprPal[startSprite+loadedCharSprites], NE_TEXGEN_TEXCOORD, bgPath);
-            NE_SpriteSetMaterial(spr[startSprite+loadedCharSprites], sprMtl[startSprite+loadedCharSprites]);
-            NE_SpriteVisible(spr[startSprite+loadedCharSprites], 1);
-            NE_SpriteSetPos(spr[startSprite+loadedCharSprites], 0, 0);
-            NE_SpriteSetPriority(spr[startSprite+loadedCharSprites], 50);
-            charSprites[loadedCharSprites].sprite = &spr[startSprite+loadedCharSprites];
-            charSprites[loadedCharSprites].mtl = &sprMtl[startSprite+loadedCharSprites];
-            charSprites[loadedCharSprites].pal = &sprPal[startSprite+loadedCharSprites];
-            strcpy(charSprites[loadedCharSprites].name, bgName);
-            loadedCharSprites++;
+            int index = startSprite+loadedSprites;
+            printf("%d\n", index);
+            NE_MaterialDelete(sprMtl[index]);
+            sprMtl[index] = NE_MaterialCreate();
+
+            NE_PaletteDelete(sprPal[index]);
+            sprPal[index] = NE_PaletteCreate();
+
+            //NE_MaterialTexLoadGRF(sprMtl[index], sprPal[index], NE_TEXGEN_TEXCOORD, bgPath);
+            NE_SpriteSetMaterial(spr[index], sprMtl[index]);
+            NE_SpriteVisible(spr[index], 1);
+            NE_SpriteSetPos(spr[index], 0, 0);
+            NE_SpriteSetPriority(spr[index], 50);
+
+            charSprites[loadedSprites].sprite = spr[index];
+            charSprites[loadedSprites].mtl = sprMtl[index];
+            charSprites[loadedSprites].pal = sprPal[index];
+            snprintf(charSprites[loadedSprites].name, 31, bgName);
+
+            scriptArray[scriptCounter].bg = &charSprites[loadedSprites];
+            loadedSprites++;
         }
 
+        int loadedCharacters = 0;
+        // go through all the chr in the chrs section
+        
         for (json_t const* charactersItem = json_getChild(json_getProperty(scriptItem, "chrs")); charactersItem != 0; charactersItem = json_getSibling(charactersItem)) {
-            char charSpriteName[32];
-            char charSpritePath[64];
+            char charSpriteName[64];
+            char charSpritePath[128];
             char charName[16];
             char charSprite[32];
-            if (charactersItem != 0) {
-                strcpy(charName, json_getPropertyValue(charactersItem, "chr"));
-                strcpy(charSprite, json_getPropertyValue(charactersItem, "spr"));
-                sprintf(charSpriteName, "%s_%s", charName, charSprite);
-                sprintf(charSpritePath, "characters/%s/%s_png.grf", charName, charSpriteName);
+            
+            // if there is a character
+            snprintf(charName, 15, json_getPropertyValue(charactersItem, "chr"));
+            snprintf(charSprite, 31, json_getPropertyValue(charactersItem, "spr"));
+            snprintf(charSpriteName, 63, "%s_%s", charName, charSprite);
+            snprintf(charSpritePath, 127, "characters/%s/%s_png.grf", charName, charSpriteName);
 
-                hasBeenLoaded = 0;
-                for (int i = 0; i < MAX_CHARSPRITES; i++) {
-                    if (strcmp(charSprites[i].name, charSpriteName) == 0) {
-                        hasBeenLoaded = 1;
-                        break;
-                    }
-                }
-
-                if (!hasBeenLoaded) {
-                    NE_MaterialDelete(sprMtl[startSprite+loadedCharSprites]);
-                    sprMtl[startSprite+loadedCharSprites] = NE_MaterialCreate();
-                    NE_PaletteDelete(sprPal[startSprite+loadedCharSprites]);
-                    sprPal[startSprite+loadedCharSprites] = NE_PaletteCreate();
-                    NE_MaterialTexLoadGRF(sprMtl[startSprite+loadedCharSprites], sprPal[startSprite+loadedCharSprites], NE_TEXGEN_TEXCOORD, charSpritePath);
-                    NE_SpriteSetMaterial(spr[startSprite+loadedCharSprites], sprMtl[startSprite+loadedCharSprites]);
-                    NE_SpriteVisible(spr[startSprite+loadedCharSprites], 1);
-                    NE_SpriteSetPos(spr[startSprite+loadedCharSprites], 0, -37);
-                    NE_SpriteSetPriority(spr[startSprite+loadedCharSprites], 10);
-                    charSprites[loadedCharSprites].sprite = &spr[startSprite+loadedCharSprites];
-                    charSprites[loadedCharSprites].mtl = &sprMtl[startSprite+loadedCharSprites];
-                    charSprites[loadedCharSprites].pal = &sprPal[startSprite+loadedCharSprites];
-                    strcpy(charSprites[loadedCharSprites].name, charSpriteName);
-                    loadedCharSprites++;
+            // search through the loaded sprites to see if this character has already been loaded
+            hasBeenLoaded = 0;
+            for (int i = 0; i < loadedSprites; i++) {
+                if (strcmp(charSprites[i].name, charSpriteName) == 0) {
+                    hasBeenLoaded = 1;
+                    scriptArray[scriptCounter].characters[loadedCharacters] = &charSprites[i];
+                    break;
                 }
             }
+            // if the character has not been loaded, then load it
+            if (!hasBeenLoaded) {
+                int index = startSprite+loadedSprites;
+                printf("%d\n", index);
+                NE_MaterialDelete(sprMtl[index]);
+                sprMtl[index] = NE_MaterialCreate();
+                
+                NE_PaletteDelete(sprPal[index]);
+                sprPal[index] = NE_PaletteCreate();
+                
+                NE_MaterialTexLoadGRF(sprMtl[index], sprPal[index], NE_TEXGEN_TEXCOORD, charSpritePath);
+                NE_SpriteSetMaterial(spr[index], sprMtl[index]);
+                NE_SpriteVisible(spr[index], 1);
+                NE_SpriteSetPos(spr[index], 0, -37);
+                NE_SpriteSetPriority(spr[index], 10);
+                
+                charSprites[loadedSprites].sprite = spr[index];
+                charSprites[loadedSprites].mtl = sprMtl[index];
+                charSprites[loadedSprites].pal = sprPal[index];
+                
+                strcpy(charSprites[loadedSprites].name, charSpriteName);
+                
+                scriptArray[scriptCounter].characters[loadedCharacters] = &charSprites[loadedSprites];
+                loadedSprites++;
+            }
+            loadedCharacters++;
         }
+        strncpy(scriptArray[scriptCounter].dialogue, json_getPropertyValue(scriptItem, "say"), 255);
+        scriptCounter++;
     }
 }
 
@@ -108,72 +146,15 @@ void setupDialogue(char vol[]) {
     json_t jsonMemory[scriptLength];
     parent = json_create(script, jsonMemory, scriptLength);
     loadSprites();
+    free(script);
 
     readScript();
     
 }
 
-void createTextbox(char talking[]) {
-    if (strcmp(NF_TILEDBG[1].name, "textbox") == 0) NF_UnloadTiledBg("textbox");
-    NF_TEXT[1][0].pal = 0;
-    if (strcmp(talking, "secily") == 0) {
-        NF_LoadTiledBg("nf/textbox/secily", "textbox", 256, 256);
-    } else {
-        NF_TEXT[1][0].pal = 1;
-        NF_LoadTiledBg("nf/textbox/narration", "textbox", 256, 256);
-    }
-    NF_CreateTiledBg(1, 2, "textbox");
-}
-
-int charWidth(char c) {
-    u32 codepoint = (u32)c;
-    fseek(fnt, 93, SEEK_SET);
-    u32 id = 0;
-	u32 w = 0;
-	while (ftell(fnt) < 3373 && w == 0) {
-	    fread(&id, 4, 1, fnt);
-	    if (codepoint == id) {
-		    fseek(fnt, 12, SEEK_CUR);
-            fread(&w, 2, 1, fnt);
-	    } else {
-		    fseek(fnt, 16, SEEK_CUR);
-	    }
-	}
-    return w;
-}
-
-void writeFormattedText(int scr, int layer, int x, int y, char s[]) {
-    strcpy(activeDialogue, "");
-    char out[1000];
-    strcpy(out, s);
-    char* word = strtok(out, " ");
-    char line[40] = "";
-    int lineWidth = 0;
-    while (word) {
-        int wordWidth = 0;
-        for (int i = 0; i < strlen(word); i++) {
-            wordWidth += charWidth(word[i]);
-        }
-        lineWidth += wordWidth;
-        if(lineWidth+wordWidth<=260-x){
-            strcat(line,word);
-            strcat(line," ");
-            lineWidth += 3;
-        } else {
-            strcat(activeDialogue, line);
-            strcat(activeDialogue, "\n");
-            lineWidth = 0;
-            strcpy(line, word);
-            strcat(line, " ");
-            y++;
-        }
-        word = strtok(NULL, " ");
-    }
-    strcat(activeDialogue, line);
-}
-
 void readScript(void) {
 
+    /*
     char bgName[100];
     char charSpriteName[4][100];
     char character[4][16];
@@ -235,7 +216,7 @@ void readScript(void) {
                 break;
             }
         }
-    }
+    } */
     //createTextbox(textbox);
     //writeFormattedText(1, 0, 1, 3, text);
 }

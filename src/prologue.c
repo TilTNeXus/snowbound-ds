@@ -73,13 +73,13 @@ void setupPrologue(void) {
 void drawPrologue(int screen) {
     if (!screen) {
         // top screen
-        NE_SpriteDraw(*activeBGSprite.sprite);
-        NE_SpriteDraw(*onScreenCharSprites[0].sprite);
+        NE_SpriteDraw(scriptArray[scriptPosition].bg->sprite);
+        NE_SpriteDraw(scriptArray[scriptPosition].characters[0]->sprite);
     } else {
         // bottom screen
         NE_SpriteDraw(spr[1]);
         NE_SpriteDraw(spr[2]);
-        NE_RichTextRender3D(0, activeDialogue, 10, 24);
+        NE_RichTextRender3D(0, scriptArray[scriptPosition].dialogue, 10, 24);
     }
     NE_SpriteDraw(spr[0]);
 }

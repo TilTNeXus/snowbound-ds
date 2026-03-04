@@ -6,6 +6,9 @@ sys.path.insert(0, "architectds/architectds")
 from architectds import *
 import crc
 
+if os.path.isfile("snowbound-ds.nds"):
+    os.remove("snowbound-ds.nds")
+
 examplesdir = os.path.join("src", "tiny-json", "examples")
 if os.path.exists(examplesdir):
     for file in os.listdir(examplesdir):

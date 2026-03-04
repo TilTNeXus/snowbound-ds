@@ -25,7 +25,7 @@ NE_Palette *sprPal[40];
 NE_Sprite *textSpr;
 NE_Material *textMtl = NULL;
 charSprite_t charSprites[MAX_CHARSPRITES];
-int loadedCharSprites = 0;
+uint8_t loadedSprites = 0;
 charSprite_t onScreenCharSprites[4];
 charSprite_t activeBGSprite;
 
@@ -103,7 +103,7 @@ int main(void) {
     
     NE_InitDual3D();
     
-    //NE_InitConsole();
+    NE_InitConsole();
 
     for (int i = 0; i < 40; i++) {
       	spr[i] = NE_SpriteCreate();
