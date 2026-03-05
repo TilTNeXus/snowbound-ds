@@ -62,7 +62,7 @@ void setupPrologue(void) {
     NE_SpriteSetPos(spr[1], 0, 0);
     NE_SpriteSetPriority(spr[1], 49);
     
-    NE_MaterialTexLoadGRF(sprMtl[2], sprPal[2], NE_TEXGEN_TEXCOORD, "backgrounds/mainmenu/layers/table_png.grf");
+    if (!NE_MaterialTexLoadGRF(sprMtl[2], sprPal[2], NE_TEXGEN_TEXCOORD, "backgrounds/mainmenu/layers/table_png.grf")) printf("table fail\n");
     NE_SpriteSetMaterial(spr[2], sprMtl[2]);
     NE_SpriteSetPos(spr[2], 0, 0);
     NE_SpriteSetPriority(spr[2], 50);
@@ -75,6 +75,7 @@ void drawPrologue(int screen) {
         // top screen
         NE_SpriteDraw(scriptArray[scriptPosition].bg->sprite);
         NE_SpriteDraw(scriptArray[scriptPosition].characters[0]->sprite);
+        //printf("\x1b[2J           %s\n", scriptArray[scriptPosition].characters[0]->name);
     } else {
         // bottom screen
         NE_SpriteDraw(spr[1]);

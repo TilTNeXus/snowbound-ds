@@ -11,6 +11,58 @@ char volume[6];
 uint16 scriptMax;
 int startSprite = 3;
 scriptElement *scriptArray = NULL;
+int charWidthArray[128];
+
+void loadCharWidths() {
+    fseek(fnt, 93, SEEK_SET);
+    u32 id = 0;
+	for (char i = ' '; i <= '~'; i++) {
+	    fread(&id, 4, 1, fnt);
+        fseek(fnt, 12, SEEK_CUR);
+        fread(&charWidthArray[id - 0x20], 2, 1, fnt);
+        fseek(fnt, 2, SEEK_CUR);
+	}
+}
+
+int charWidth(char c) {
+    int newID = c - 0x20;
+    if (0 <= newID) {
+        return charWidthArray[c - 0x20];
+    } else return 0;
+}
+
+char *addLinebreaks(const char *s) {
+
+    char *withLines = calloc(300, sizeof(char));
+    char out[256];
+    strncpy(out, s, 255);
+    char* word = strtok(out, " ");
+    char line[40] = "";
+    int lineWidth = 0;
+    while (word) {
+        int wordWidth = 0;
+        int wordLength = strlen(word);
+        for (int i = 0; i < wordLength; i++) {
+            wordWidth += charWidth(word[i]);
+        }
+        if (lineWidth + wordWidth <= 240) {
+            strcat(line, word);
+            strcat(line, " ");
+            lineWidth += charWidth(' ');
+        } else {
+            strcat(withLines, line);
+            strcat(withLines, "\n");
+            lineWidth = 0;
+            strcpy(line, word);
+            strcat(line, " ");
+        }
+        lineWidth += wordWidth;
+        word = strtok(NULL, " ");
+    }
+    strcat(withLines, line);
+    withLines[299] = '\0';
+    return withLines;
+}
 
 /*  go through the script, get every unique character sprite and background, 
     store pointers to sprites, materials, and palettes alongside the name to identify them for later use
@@ -25,7 +77,7 @@ void loadSprites(void) {
         scriptCounter++;
     }
     if (scriptArray != NULL) free(scriptArray);
-    scriptArray = malloc((scriptCounter+1)*sizeof(scriptElement));
+    scriptArray = calloc((scriptCounter+1), sizeof(scriptElement));
     
     scriptCounter = 0;
     for (json_t const* scriptItem = json_getChild(json_getProperty(parent, "script")); scriptItem != 0; scriptItem = json_getSibling(scriptItem)) {
@@ -47,14 +99,13 @@ void loadSprites(void) {
         // if the bg has not been loaded, then load it
         if (!hasBeenLoaded) {
             int index = startSprite+loadedSprites;
-            printf("%d\n", index);
             NE_MaterialDelete(sprMtl[index]);
             sprMtl[index] = NE_MaterialCreate();
 
             NE_PaletteDelete(sprPal[index]);
             sprPal[index] = NE_PaletteCreate();
 
-            //NE_MaterialTexLoadGRF(sprMtl[index], sprPal[index], NE_TEXGEN_TEXCOORD, bgPath);
+            NE_MaterialTexLoadGRF(sprMtl[index], sprPal[index], NE_TEXGEN_TEXCOORD, bgPath);
             NE_SpriteSetMaterial(spr[index], sprMtl[index]);
             NE_SpriteVisible(spr[index], 1);
             NE_SpriteSetPos(spr[index], 0, 0);
@@ -63,7 +114,7 @@ void loadSprites(void) {
             charSprites[loadedSprites].sprite = spr[index];
             charSprites[loadedSprites].mtl = sprMtl[index];
             charSprites[loadedSprites].pal = sprPal[index];
-            snprintf(charSprites[loadedSprites].name, 31, bgName);
+            strncpy(charSprites[loadedSprites].name, bgName, 32);
 
             scriptArray[scriptCounter].bg = &charSprites[loadedSprites];
             loadedSprites++;
@@ -79,8 +130,8 @@ void loadSprites(void) {
             char charSprite[32];
             
             // if there is a character
-            snprintf(charName, 15, json_getPropertyValue(charactersItem, "chr"));
-            snprintf(charSprite, 31, json_getPropertyValue(charactersItem, "spr"));
+            snprintf(charName, 15, "%s", json_getPropertyValue(charactersItem, "chr"));
+            snprintf(charSprite, 31, "%s", json_getPropertyValue(charactersItem, "spr"));
             snprintf(charSpriteName, 63, "%s_%s", charName, charSprite);
             snprintf(charSpritePath, 127, "characters/%s/%s_png.grf", charName, charSpriteName);
 
@@ -96,7 +147,6 @@ void loadSprites(void) {
             // if the character has not been loaded, then load it
             if (!hasBeenLoaded) {
                 int index = startSprite+loadedSprites;
-                printf("%d\n", index);
                 NE_MaterialDelete(sprMtl[index]);
                 sprMtl[index] = NE_MaterialCreate();
                 
@@ -120,7 +170,9 @@ void loadSprites(void) {
             }
             loadedCharacters++;
         }
-        strncpy(scriptArray[scriptCounter].dialogue, json_getPropertyValue(scriptItem, "say"), 255);
+        char *lineBreaks = addLinebreaks(json_getPropertyValue(scriptItem, "say"));
+        strncpy(scriptArray[scriptCounter].dialogue, lineBreaks, 255);
+        free(lineBreaks);
         scriptCounter++;
     }
 }
@@ -143,6 +195,7 @@ void setupDialogue(char vol[]) {
     fclose(scriptFile);
     script[scriptLength] = '\0';
 
+    loadCharWidths();
     json_t jsonMemory[scriptLength];
     parent = json_create(script, jsonMemory, scriptLength);
     loadSprites();
