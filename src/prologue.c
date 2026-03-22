@@ -73,8 +73,8 @@ void setupPrologue(void) {
 void drawPrologue(int screen) {
     if (!screen) {
         // top screen
-        NE_SpriteDraw(scriptArray[scriptPosition].bg->sprite);
-        NE_SpriteDraw(scriptArray[scriptPosition].characters[0]->sprite);
+        NE_SpriteDraw(spr[3]);
+        NE_SpriteDraw(spr[4]);
         //printf("\x1b[2J           %s\n", scriptArray[scriptPosition].characters[0]->name);
     } else {
         // bottom screen

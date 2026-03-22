@@ -9,9 +9,11 @@ void setupDialogue(char volume[]);
 void readScript(void);
 void advance(uint8 direction);
 typedef struct scriptElement {
-    charSprite_t *bg;
+    //charSprite_t *bg;
+    char bgPath[128];
     int musicID;
-    charSprite_t *characters[4];
+    char charactersPath[128][4];
+    //charSprite_t *characters[4];
     int speaking;
     char dialogue[256];
 } scriptElement;

@@ -19,15 +19,15 @@ void loadCharWidths() {
 	for (char i = ' '; i <= '~'; i++) {
 	    fread(&id, 4, 1, fnt);
         fseek(fnt, 12, SEEK_CUR);
-        fread(&charWidthArray[id - 0x20], 2, 1, fnt);
+        fread(&charWidthArray[id - (int)' '], 2, 1, fnt);
         fseek(fnt, 2, SEEK_CUR);
 	}
 }
 
 int charWidth(char c) {
-    int newID = c - 0x20;
+    int newID = c - (int)' ';
     if (0 <= newID) {
-        return charWidthArray[c - 0x20];
+        return charWidthArray[newID];
     } else return 0;
 }
 
@@ -85,10 +85,12 @@ void loadSprites(void) {
         
         // loading backgrounds
         char bgName[32];
-        char bgPath[64];
+        char bgPath[128];
         snprintf(bgName, 31, json_getPropertyValue(scriptItem, "bg"));
         snprintf(bgPath, 63, "backgrounds/%s/%s_png.grf", volume, bgName);
+        strncpy(scriptArray[scriptCounter].bgPath, bgPath, 127);
         // search through the loaded sprites to see if this background has already been loaded
+        /*
         for (int i = 0; i < loadedSprites; i++) {
             if (strcmp(charSprites[i].name, bgName) == 0) {
                 hasBeenLoaded = 1;
@@ -121,9 +123,11 @@ void loadSprites(void) {
         }
 
         int loadedCharacters = 0;
+        */
         // go through all the chr in the chrs section
         
         for (json_t const* charactersItem = json_getChild(json_getProperty(scriptItem, "chrs")); charactersItem != 0; charactersItem = json_getSibling(charactersItem)) {
+            int loadedCharacters = 0;
             char charSpriteName[64];
             char charSpritePath[128];
             char charName[16];
@@ -134,7 +138,9 @@ void loadSprites(void) {
             snprintf(charSprite, 31, "%s", json_getPropertyValue(charactersItem, "spr"));
             snprintf(charSpriteName, 63, "%s_%s", charName, charSprite);
             snprintf(charSpritePath, 127, "characters/%s/%s_png.grf", charName, charSpriteName);
-
+            strncpy(scriptArray[scriptCounter].charactersPath[loadedCharacters], charSpritePath, 127);
+            loadedCharacters++;
+            /*
             // search through the loaded sprites to see if this character has already been loaded
             hasBeenLoaded = 0;
             for (int i = 0; i < loadedSprites; i++) {
@@ -169,6 +175,7 @@ void loadSprites(void) {
                 loadedSprites++;
             }
             loadedCharacters++;
+            */
         }
         char *lineBreaks = addLinebreaks(json_getPropertyValue(scriptItem, "say"));
         strncpy(scriptArray[scriptCounter].dialogue, lineBreaks, 255);
@@ -207,6 +214,37 @@ void setupDialogue(char vol[]) {
 
 void readScript(void) {
 
+    int index = startSprite;
+    if (!scriptPosition || strcmp(scriptArray[scriptPosition].bgPath, scriptArray[scriptPosition-1].bgPath)) {
+        NE_MaterialDelete(sprMtl[index]);
+        sprMtl[index] = NE_MaterialCreate();
+                        
+        NE_PaletteDelete(sprPal[index]);
+        sprPal[index] = NE_PaletteCreate();
+                        
+        NE_MaterialTexLoadGRF(sprMtl[index], sprPal[index], NE_TEXGEN_TEXCOORD, scriptArray[scriptPosition].bgPath);
+        NE_SpriteSetMaterial(spr[index], sprMtl[index]);
+        NE_SpriteVisible(spr[index], 1);
+        NE_SpriteSetPos(spr[index], 0, 0);
+        NE_SpriteSetPriority(spr[index], 50);
+    }
+
+    for (int i = 0; i < 4; i++) {
+        index++;
+        if (!scriptPosition || strcmp(scriptArray[scriptPosition].charactersPath[i], scriptArray[scriptPosition-1].charactersPath[i])) {
+            NE_MaterialDelete(sprMtl[index]);
+            sprMtl[index] = NE_MaterialCreate();
+                            
+            NE_PaletteDelete(sprPal[index]);
+            sprPal[index] = NE_PaletteCreate();
+                            
+            NE_MaterialTexLoadGRF(sprMtl[index], sprPal[index], NE_TEXGEN_TEXCOORD, scriptArray[scriptPosition].charactersPath[i]);
+            NE_SpriteSetMaterial(spr[index], sprMtl[index]);
+            NE_SpriteVisible(spr[index], 1);
+            NE_SpriteSetPos(spr[index], 0, -37);
+            NE_SpriteSetPriority(spr[index], 10);
+        }
+    }
     /*
     char bgName[100];
     char charSpriteName[4][100];

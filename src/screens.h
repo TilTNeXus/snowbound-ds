@@ -24,10 +24,10 @@ typedef struct charSprite_t {
     NE_Sprite *sprite;
     NE_Material *mtl;
     NE_Palette *pal;
-    char name[32];
+    char path[128];
 } charSprite_t;
 #define MAX_CHARSPRITES 32
-extern charSprite_t charSprites[MAX_CHARSPRITES];
+//extern charSprite_t charSprites[MAX_CHARSPRITES];
 extern uint8_t loadedSprites;
 
 void draw3D_top(void);
