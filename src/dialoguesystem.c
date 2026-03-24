@@ -11,12 +11,12 @@ char volume[6];
 uint16 scriptMax;
 int startSprite = 3;
 scriptElement *scriptArray = NULL;
-int charWidthArray[128];
+int charWidthArray[256];
 
 void loadCharWidths() {
     fseek(fnt, 93, SEEK_SET);
     u32 id = 0;
-	for (char i = ' '; i <= '~'; i++) {
+	for (char i = ' '; i < 250; i++) {
 	    fread(&id, 4, 1, fnt);
         fseek(fnt, 12, SEEK_CUR);
         fread(&charWidthArray[id - (int)' '], 2, 1, fnt);
@@ -64,6 +64,12 @@ char *addLinebreaks(const char *s) {
     return withLines;
 }
 
+void setTextColor(int color) {
+    NE_PaletteModificationStart(textPal);
+    NE_PaletteRGB256SetColor(1, color);
+    NE_PaletteModificationEnd();
+}
+
 /*  go through the script, get every unique character sprite and background, 
     store pointers to sprites, materials, and palettes alongside the name to identify them for later use
     then store pointers to those in an array for each position of the script
@@ -81,105 +87,31 @@ void loadSprites(void) {
     
     scriptCounter = 0;
     for (json_t const* scriptItem = json_getChild(json_getProperty(parent, "script")); scriptItem != 0; scriptItem = json_getSibling(scriptItem)) {
-        bool hasBeenLoaded = 0;
         
         // loading backgrounds
-        char bgName[32];
-        char bgPath[128];
-        snprintf(bgName, 31, json_getPropertyValue(scriptItem, "bg"));
-        snprintf(bgPath, 63, "backgrounds/%s/%s_png.grf", volume, bgName);
+        char bgPath[127];
+        snprintf(bgPath, 63, "backgrounds/%s/%s_png.grf", volume, json_getPropertyValue(scriptItem, "bg"));
         strncpy(scriptArray[scriptCounter].bgPath, bgPath, 127);
-        // search through the loaded sprites to see if this background has already been loaded
-        /*
-        for (int i = 0; i < loadedSprites; i++) {
-            if (strcmp(charSprites[i].name, bgName) == 0) {
-                hasBeenLoaded = 1;
-                scriptArray[scriptCounter].bg = &charSprites[i];
-                break;
-            }
-        }
-        // if the bg has not been loaded, then load it
-        if (!hasBeenLoaded) {
-            int index = startSprite+loadedSprites;
-            NE_MaterialDelete(sprMtl[index]);
-            sprMtl[index] = NE_MaterialCreate();
-
-            NE_PaletteDelete(sprPal[index]);
-            sprPal[index] = NE_PaletteCreate();
-
-            NE_MaterialTexLoadGRF(sprMtl[index], sprPal[index], NE_TEXGEN_TEXCOORD, bgPath);
-            NE_SpriteSetMaterial(spr[index], sprMtl[index]);
-            NE_SpriteVisible(spr[index], 1);
-            NE_SpriteSetPos(spr[index], 0, 0);
-            NE_SpriteSetPriority(spr[index], 50);
-
-            charSprites[loadedSprites].sprite = spr[index];
-            charSprites[loadedSprites].mtl = sprMtl[index];
-            charSprites[loadedSprites].pal = sprPal[index];
-            strncpy(charSprites[loadedSprites].name, bgName, 32);
-
-            scriptArray[scriptCounter].bg = &charSprites[loadedSprites];
-            loadedSprites++;
-        }
-
-        int loadedCharacters = 0;
-        */
-        // go through all the chr in the chrs section
         
         for (json_t const* charactersItem = json_getChild(json_getProperty(scriptItem, "chrs")); charactersItem != 0; charactersItem = json_getSibling(charactersItem)) {
             int loadedCharacters = 0;
-            char charSpriteName[64];
-            char charSpritePath[128];
             char charName[16];
-            char charSprite[32];
+            char charSpritePath[127];
             
             // if there is a character
             snprintf(charName, 15, "%s", json_getPropertyValue(charactersItem, "chr"));
-            snprintf(charSprite, 31, "%s", json_getPropertyValue(charactersItem, "spr"));
-            snprintf(charSpriteName, 63, "%s_%s", charName, charSprite);
-            snprintf(charSpritePath, 127, "characters/%s/%s_png.grf", charName, charSpriteName);
+            snprintf(charSpritePath, 127, "characters/%s/%s_%s_png.grf", charName, charName, json_getPropertyValue(charactersItem, "spr"));
             strncpy(scriptArray[scriptCounter].charactersPath[loadedCharacters], charSpritePath, 127);
             loadedCharacters++;
-            /*
-            // search through the loaded sprites to see if this character has already been loaded
-            hasBeenLoaded = 0;
-            for (int i = 0; i < loadedSprites; i++) {
-                if (strcmp(charSprites[i].name, charSpriteName) == 0) {
-                    hasBeenLoaded = 1;
-                    scriptArray[scriptCounter].characters[loadedCharacters] = &charSprites[i];
-                    break;
-                }
-            }
-            // if the character has not been loaded, then load it
-            if (!hasBeenLoaded) {
-                int index = startSprite+loadedSprites;
-                NE_MaterialDelete(sprMtl[index]);
-                sprMtl[index] = NE_MaterialCreate();
-                
-                NE_PaletteDelete(sprPal[index]);
-                sprPal[index] = NE_PaletteCreate();
-                
-                NE_MaterialTexLoadGRF(sprMtl[index], sprPal[index], NE_TEXGEN_TEXCOORD, charSpritePath);
-                NE_SpriteSetMaterial(spr[index], sprMtl[index]);
-                NE_SpriteVisible(spr[index], 1);
-                NE_SpriteSetPos(spr[index], 0, -37);
-                NE_SpriteSetPriority(spr[index], 10);
-                
-                charSprites[loadedSprites].sprite = spr[index];
-                charSprites[loadedSprites].mtl = sprMtl[index];
-                charSprites[loadedSprites].pal = sprPal[index];
-                
-                strcpy(charSprites[loadedSprites].name, charSpriteName);
-                
-                scriptArray[scriptCounter].characters[loadedCharacters] = &charSprites[loadedSprites];
-                loadedSprites++;
-            }
-            loadedCharacters++;
-            */
         }
         char *lineBreaks = addLinebreaks(json_getPropertyValue(scriptItem, "say"));
         strncpy(scriptArray[scriptCounter].dialogue, lineBreaks, 255);
         free(lineBreaks);
+
+        char speaking[32];
+        strncpy(speaking, json_getPropertyValue(scriptItem, "box"), 31); 
+        if (strcmp(speaking, "narration") == 0) scriptArray[scriptCounter].speaking = textbox_narration;
+        else if (strcmp(speaking, "secily") == 0) scriptArray[scriptCounter].speaking = textbox_secily;
         scriptCounter++;
     }
 }
@@ -245,6 +177,13 @@ void readScript(void) {
             NE_SpriteSetPriority(spr[index], 10);
         }
     }
+
+    setTextColor(0xffffff);
+    if (scriptArray[scriptPosition].speaking == textbox_narration) {
+        setTextColor(0x000000);
+        NE_MaterialTexLoadGRF(sprMtl[1], sprPal[1], NE_TEXGEN_TEXCOORD, "gui/textbox/narration_png.grf");
+    }
+    else if (scriptArray[scriptPosition].speaking == textbox_secily) NE_MaterialTexLoadGRF(sprMtl[1], sprPal[1], NE_TEXGEN_TEXCOORD, "gui/textbox/secily_png.grf");
     /*
     char bgName[100];
     char charSpriteName[4][100];

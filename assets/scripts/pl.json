@@ -1,6 +1,7 @@
 {
     "script": [ 
         { 
+            "id": 0,
             "bg": "warehouse",
             "mus": "secilytheme",
             "chrs": [ 
@@ -10,6 +11,7 @@
             "say": "1.e4 Go ahead, take it. ...e5"
         },
         { 
+            "id": 1,
             "bg": "warehouse",
             "chrs": [
                 {"chr": "secily", "spr": "sword_hold", "trans": "twitch"}
@@ -18,6 +20,7 @@
             "say": "You proffer the dueling rapier, your second-best, to the ruffian. You took down his two mates easily enough, and now he's the last one standing. Unarmed and afraid."
         },
         { 
+            "id": 2,
             "bg": "warehouse",
             "chrs": [
                 {"chr": "secily", "spr": "sword_hold"}
@@ -26,6 +29,7 @@
             "say": "This is part of the ritual for you. He's not dying alone."
         },
         { 
+            "id": 3,
             "bg": "warehouse",
             "chrs": [
                 {"chr": "secily", "spr": "sword_hold", "speak": 1}
@@ -34,6 +38,7 @@
             "say": "2.f4 It's not a trick. You know that. I'm sure all your ilk has heard of me. ...exf4"
         },
         { 
+            "id": 4,
             "bg": "warehouse",
             "chrs": [
                 {"chr": "secily", "spr": "sword_hold", "speak": 1}
@@ -42,6 +47,7 @@
             "say": "3.Nf3 There we go, you even know how to hold it. ...Be7"
         },
         { 
+            "id": 5,
             "bg": "warehouse",
             "chrs": [
                 {"chr": "secily", "spr": "menacing", "speak": 1}
@@ -50,6 +56,7 @@
             "say": "4.Bc4 Sometimes I get asked why I do this. ...Bh4+"
         },
         { 
+            "id": 6,
             "bg": "warehouse",
             "chrs": [
                 {"chr": "secily", "spr": "menacing"}
@@ -58,6 +65,7 @@
             "say": "He stands, eyes narrowed, and you touch the tips of your blades. Proper stance and all. You wish more smugglers had the touch of class this soul did."
         },
         { 
+            "id": 7,
             "bg": "warehouse",
             "chrs": [
                 {"chr": "secily", "spr": "menacing"}
@@ -66,6 +74,7 @@
             "say": "You almost feel bad for what's about to happen."
         },
         { 
+            "id": 8,
             "bg": "warehouse",
             "chrs": [
                 {"chr": "secily", "spr": "menacing"}
@@ -74,6 +83,7 @@
             "say": "Then you remember the document detailing the deaths caused by this counterfeit medicine lab, start to finish, like it was photocopied straight into your head."
         },
         { 
+            "id": 9,
             "bg": "warehouse",
             "chrs": [
                 {"chr": "secily", "spr": "menacing", "speak": 1}
@@ -82,6 +92,7 @@
             "say": "5.g3 There're three reasons. Here's the first: it's only fair. Face to face, blade to blade, an honest chance. You deserve that. Everyone deserves that. If you die, you die with nobility. With courage. ...fxg3"
         },
         { 
+            "id": 10,
             "bg": "warehouse",
             "mus": "secilytheme",
             "chrs": [
@@ -91,6 +102,7 @@
             "say": "6.O-O If you don't, you walk out of here the first man in twelve sweeps to win a duel with me. And that's something to fight for. ...gxh2+"
         },
         { 
+            "id": 11,
             "bg": "warehouse",
             "mus": "secilyfight",
             "chrs": [
@@ -98,6 +110,91 @@
             ],
             "box": "secily",
             "say": "7.Kh1 Allez! ...Be7"
+        },
+        { 
+            "id": 12,
+            "bg": "warehouse",
+            "mus": "secilyfight",
+            "chrs": [
+                {"chr": "secily", "spr": "en_garde"}
+            ],
+            "box": "choice",
+            "say0": "You start the bout with...",
+            "say1": "You follow up with...",
+            "say2": "You end the bout with...",
+            "choices": [
+                {"text": "A feint to the right.", "next": 13},
+                {"text": "An appel.", "next": 15},
+                {"text": "A simple thrust.", "next": 17}
+            ]
+        },
+        { 
+            "id": 13,
+            "bg": "warehouse",
+            "mus": "secilyfight",
+            "chrs": [
+                {"chr": "secily", "spr": "lunge"}
+            ],
+            "box": "narration",
+            "say0": "You start the bout with a feint to the right, but he doesn't take the bait, holding steady... but too passive. A shame.",
+            "say1": "You follow up with a feint to the right, but he doesn't take the bait, holding steady... but too passive. A shame."
+        },
+        { 
+            "id": 14,
+            "bg": "warehouse",
+            "mus": "secilyfight",
+            "chrs": [
+                {"chr": "secily", "spr": "lunge"}
+            ],
+            "box": "narration",
+            "say": "A bit more aggression and he'd be a real challenge. You straighten yourself to continue the duel.",
+            "next": 12
+        },
+        { 
+            "id": 15,
+            "bg": "warehouse",
+            "mus": "secilyfight",
+            "chrs": [
+                {"chr": "secily", "spr": "en_garde"}
+            ],
+            "box": "narration",
+            "say0": "You start the bout, aiming to shock him with the noise of your stomp on approach. He flinches at it, but not enough to be a real opening.",
+            "say1": "You follow up with a feint to the right, but he doesn't take the bait, holding steady... but too passive. A shame.",
+            "prev": 12
+        },
+        { 
+            "id": 16,
+            "bg": "warehouse",
+            "mus": "secilyfight",
+            "chrs": [
+                {"chr": "secily", "spr": "en_garde"}
+            ],
+            "box": "narration",
+            "say": "Good composure, kid.",
+            "next": 12
+        },
+        { 
+            "id": 17,
+            "bg": "warehouse",
+            "mus": "secilyfight",
+            "chrs": [
+                {"chr": "secily", "spr": "lunge"}
+            ],
+            "box": "narration",
+            "say0": "You start the bout with a simple thrust. This one knows what he's doing, you can see it in his stance.",
+            "say1": "You follow up with a simple thrust. This one knows what he's doing, you can see it in his stance.",
+            "say2": "You end the bout with a simple thrust. This one knows what he's doing, you can see it in his stance.",
+            "prev": 12
+        },
+        { 
+            "id": 18,
+            "bg": "warehouse",
+            "mus": "secilyfight",
+            "chrs": [
+                {"chr": "secily", "spr": "lunge"}
+            ],
+            "box": "narration",
+            "say": "He might've been just like you, learning the épée in some bright office, dreaming of holding a real regulator's blade like Proserpina, gleaming in your hand."
         }
     ]
 }

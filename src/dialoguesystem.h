@@ -12,9 +12,15 @@ typedef struct scriptElement {
     //charSprite_t *bg;
     char bgPath[128];
     int musicID;
-    char charactersPath[128][4];
+    char charactersPath[4][128];
     //charSprite_t *characters[4];
     int speaking;
     char dialogue[256];
 } scriptElement;
 extern scriptElement *scriptArray;
+void setTextColor(int color);
+enum textboxID {
+    textbox_narration = 0,
+    textbox_choice = 1,
+    textbox_secily = 2
+};

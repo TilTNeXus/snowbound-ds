@@ -22,7 +22,7 @@ char activeScreen[10] = "splash";
 NE_Sprite *spr[40];
 NE_Material *sprMtl[40];
 NE_Palette *sprPal[40];
-NE_Sprite *textSpr;
+NE_Palette *textPal = NULL;
 NE_Material *textMtl = NULL;
 charSprite_t charSprites[MAX_CHARSPRITES];
 uint8_t loadedSprites = 0;
@@ -120,10 +120,13 @@ int main(void) {
 
     NE_RichTextInit(0);
     NE_RichTextMetadataLoadFAT(0, "font/ndsbios.fnt");
-    NE_RichTextMaterialLoadGRF(0, "font/ndsbios_0_png.grf");
+    textMtl = NE_MaterialCreate();
+    textPal = NE_PaletteCreate();
+    NE_MaterialTexLoadGRF(textMtl, textPal, NE_TEXGEN_TEXCOORD, "font/ndsbios_0_png.grf");
+    NE_RichTextMaterialSet(0, textMtl, textPal);
 
     while (1) {
-      	//printf("\x1b[2J%d\n%d\n", NE_TextureFreeMem(), screenFrames);
+      	printf("\x1b[2J%d\n%d\n", NE_TextureFreeMem(), screenFrames);
         NE_WaitForVBL(0);
 		screenFrames++;
         scanKeys();
