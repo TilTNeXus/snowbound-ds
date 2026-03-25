@@ -78,16 +78,16 @@ void controlMainMenu(void) {
 				noTransition = 1;
 			}
 			spr[0]->alpha = (td)*31/90;
-			soundSetVolume(0, 127-(td)*127/90);
-			soundSetVolume(1, 127-(td)*127/90);
+			mmSetModuleVolume(1024-(td)*1024/90);
+			mmSetModuleVolume(1024-(td)*1024/90);
       	} else if (td == 91) {
 			setupVolumeSelect();
     	}
     } else if (mainMenuSelect == 5 && pressedA) {
       	if (td < 16) {
 			spr[0]->alpha = 1+(td)*2;
-			soundSetVolume(0, 127-(td)*127/15);
-			soundSetVolume(1, 127-(td)*127/15);
+			mmSetModuleVolume(1024-(td)*1024/15);
+			mmSetModuleVolume(1024-(td)*1024/15);
       	} else if (td == 20) {
 			NE_End();
 			//exit(0);
@@ -99,7 +99,6 @@ void controlMainMenu(void) {
     } else if (screenFrames == 10) {
       	NE_SpriteVisible(spr[0], 0);
     }
-    playBGM("mainmenu");
     inputMainMenu();
 }
 void inputMainMenu(void) {
@@ -143,6 +142,9 @@ void setupMainMenu(void) {
 
     soundKill(0);
     soundKill(1);
+    mmLoad(MOD_MAINMENU);
+    mmStart(MOD_MAINMENU, MM_PLAY_LOOP);
+    mmSetModuleVolume(1024);
     
     for (int i = 1; i < 40; i++) {
       	NE_SpriteDelete(spr[i]);

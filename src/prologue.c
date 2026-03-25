@@ -23,7 +23,7 @@ void controlPrologue(void) {
 	   	NE_SpriteVisible(spr[0], 0);
   	}
     inputPrologue();
-    playBGM(songPlaying);
+    //playBGM(songPlaying);
     transforms();
 }
 

@@ -29,17 +29,20 @@ nitrofs.add_grit(['assets/gui'], 'gui')
 nitrofs.add_grit(['assets/images'], 'images')
 nitrofs.add_nflib_bg_tiled(['assets/nf'], 'nf')
 nitrofs.add_files_unchanged(['assets/scripts'], 'scripts')
+soundbank_header = nitrofs.add_mmutil(['assets/audio/mod'])
 nitrofs.generate_image()
 
 arm9 = Arm9Binary(
     sourcedirs=['src'],
-    libs=['NE', 'nflib', 'nds9'],
+    libs=['NE', 'nflib', 'nds9', 'mm9'],
     libdirs=[
         '${BLOCKSDS}/libs/libnds',
         '${BLOCKSDSEXT}/nitro-engine',
-        '${BLOCKSDSEXT}/nflib'
+        '${BLOCKSDSEXT}/nflib',
+        '${BLOCKSDS}/libs/maxmod'
     ]
 )
+arm9.add_header_dependencies([soundbank_header])
 arm9.generate_elf()
 
 nds = NdsRom(

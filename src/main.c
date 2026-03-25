@@ -115,6 +115,7 @@ int main(void) {
 
     soundEnable();
     NF_InitRawSoundBuffers();
+    mmInitDefault("maxmod/soundbank.bin");
 
     fnt = fopen("font/ndsbios.fnt", "rb");
 
@@ -126,7 +127,7 @@ int main(void) {
     NE_RichTextMaterialSet(0, textMtl, textPal);
 
     while (1) {
-      	printf("\x1b[2J%d\n%d\n", NE_TextureFreeMem(), screenFrames);
+      	//printf("\x1b[2J%d\n%d\n", NE_TextureFreeMem(), screenFrames);
         NE_WaitForVBL(0);
 		screenFrames++;
         scanKeys();

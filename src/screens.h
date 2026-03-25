@@ -2,6 +2,8 @@
 
 #include <NEMain.h>
 #include <nf_lib.h>
+#include <maxmod9.h>
+#include "nitrofs/soundbank_info.h"
 
 extern char activeScreen[10];
 extern int screenFrames;
