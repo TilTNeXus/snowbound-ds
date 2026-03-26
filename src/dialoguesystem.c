@@ -33,34 +33,34 @@ int charWidth(char c) {
 
 char *addLinebreaks(const char *s) {
 
-    char *withLines = calloc(300, sizeof(char));
-    char out[256];
-    strncpy(out, s, 255);
-    char* word = strtok(out, " ");
-    char line[40] = "";
-    int lineWidth = 0;
-    while (word) {
-        int wordWidth = 0;
-        int wordLength = strlen(word);
-        for (int i = 0; i < wordLength; i++) {
-            wordWidth += charWidth(word[i]);
-        }
-        if (lineWidth + wordWidth <= 240) {
-            strcat(line, word);
-            strcat(line, " ");
-            lineWidth += charWidth(' ');
+    int maxOutLength = 300;
+    char *withLines = calloc(maxOutLength, sizeof(char));
+    int maxWidth = 240;
+    int wordWidth, wordLength, lineWidth, lineLength;
+    wordWidth = wordLength = lineWidth = lineLength = 0;
+    char *sptr = (char*)s;
+    char *prevword = (char*)s;
+
+    while (*sptr && sptr-s < maxOutLength) {
+        withLines[sptr-s] = *sptr;
+        if (*sptr != ' ' && *(sptr+1) != '\0') {
+            wordLength++;
+            wordWidth += charWidth(*sptr);
+            lineLength++;
         } else {
-            strcat(withLines, line);
-            strcat(withLines, "\n");
-            lineWidth = 0;
-            strcpy(line, word);
-            strcat(line, " ");
+            lineWidth += wordWidth + charWidth(' ');
+            if (lineWidth >= maxWidth) {
+                lineWidth = 0;
+                sptr = prevword;
+                withLines[sptr-s] = '\n';
+            }
+            wordLength = 0;
+            wordWidth = 0;
+            prevword = sptr;
         }
-        lineWidth += wordWidth;
-        word = strtok(NULL, " ");
+        sptr++;
     }
-    strcat(withLines, line);
-    withLines[299] = '\0';
+    withLines[sptr-s] = '\0';
     return withLines;
 }
 
@@ -104,10 +104,12 @@ void loadSprites(void) {
             strncpy(scriptArray[scriptCounter].charactersPath[loadedCharacters], charSpritePath, 127);
             loadedCharacters++;
         }
-        char *lineBreaks = addLinebreaks(json_getPropertyValue(scriptItem, "say"));
-        strncpy(scriptArray[scriptCounter].dialogue, lineBreaks, 255);
-        free(lineBreaks);
-
+        const char *sayValue = json_getPropertyValue(scriptItem, "say");
+        if (sayValue) {
+            char *lineBreaks = addLinebreaks(sayValue);
+            strncpy(scriptArray[scriptCounter].dialogue, lineBreaks, 255);
+            free(lineBreaks);
+        }
         char speaking[32];
         strncpy(speaking, json_getPropertyValue(scriptItem, "box"), 31); 
         if (strcmp(speaking, "narration") == 0) scriptArray[scriptCounter].speaking = textbox_narration;

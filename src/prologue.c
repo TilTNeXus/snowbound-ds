@@ -38,7 +38,7 @@ void inputPrologue(void) {
 void setupPrologue(void) {
 
     strcpy(activeScreen, "pl");
-    strcpy(songPlaying, "secilytheme");
+    //strcpy(songPlaying, "secilytheme");
 
 
     screenFrames = 0;

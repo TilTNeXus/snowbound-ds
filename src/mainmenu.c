@@ -82,6 +82,7 @@ void controlMainMenu(void) {
 			mmSetModuleVolume(1024-(td)*1024/90);
       	} else if (td == 91) {
 			setupVolumeSelect();
+            mmUnload(MOD_MAINMENU);
     	}
     } else if (mainMenuSelect == 5 && pressedA) {
       	if (td < 16) {
