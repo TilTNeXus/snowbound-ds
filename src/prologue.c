@@ -38,7 +38,11 @@ void inputPrologue(void) {
 void setupPrologue(void) {
 
     strcpy(activeScreen, "pl");
-    //strcpy(songPlaying, "secilytheme");
+    soundKill(0);
+    soundKill(1);
+    mmLoad(MOD_SECILY);
+    mmStart(MOD_SECILY, MM_PLAY_LOOP);
+    mmSetModuleVolume(1024);
 
 
     screenFrames = 0;
